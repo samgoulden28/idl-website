@@ -1,0 +1,11 @@
+{
+    "name": "idl-website",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "~4.12.4"
+    }
+}

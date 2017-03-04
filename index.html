@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey" onload="myFunction()">
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-grey w3-card-2">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-opennav w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">LINK1</a>
+    <a href="#band" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LINK2</a>
+    <a href="#tour" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LINK3</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LINK4</a>
+    <div class="w3-hide-small w3-dropdown-hover">
+      <a href="javascript:void(0)" class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></a>
+      <div class="w3-dropdown-content w3-white w3-card-4">
+        <a href="#">Merchandise</a>
+        <a href="#">Extras</a>
+        <a href="#">Media</a>
+      </div>
+    </div>
+    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+  </div>
+</div>
+<!-- w3-content defines a container for fixed size centered content,
+and is wrapped around the whole page content, except for the footer in this example -->
+<div class="w3-content" style="max-width:1400px">
+
+<!-- Header -->
+<header class="w3-container w3-center w3-padding-64">
+  <h1><b>IBM DOTA LEAGUE</b></h1>
+  <p>Home of the IDL</p>
+</header>
+
+<!-- Current Standings -->
+<div class="w3-card-4 w3-center w3-white">
+  <div class="w3-container w3-center w3-padding-8">
+    <h3><b>CURRENT STANDINGS</b></h3>
+    <h5>LAST UPDATED <span class="w3-opacity">04/03/2017</span></h5>
+  </div>
+
+  <div class="w3-container w3-padding-16">
+    <table class="w3-table-all">
+    <tr>
+      <th>Position</th>
+      <th>Team</th>
+      <th>Played</th>
+      <th>Won</th>
+      <th>Lost</th>
+      <th>Points</th>
+    </tr>
+    <tr>
+      <th>1</th> <!-- Position -->
+      <th>Team A</th>  <!-- Team Name -->
+      <th>0</th> <!-- Played -->
+      <th>0</th> <!-- Won -->
+      <th>0</th> <!-- Lost -->
+      <th>0</th> <!-- Points -->
+    </tr>
+    <tr>
+      <th>2</th>
+      <th>Team B</th>  <!-- Team Name -->
+      <th>0</th> <!-- Played -->
+      <th>0</th> <!-- Won -->
+      <th>0</th> <!-- Lost -->
+      <th>0</th> <!-- Points -->
+    </tr>
+    <tr>
+      <th>3</th>
+      <th>Team C</th>  <!-- Team Name -->
+      <th>0</th> <!-- Played -->
+      <th>0</th> <!-- Won -->
+      <th>0</th> <!-- Lost -->
+      <th>0</th> <!-- Points -->
+    </tr>
+    <tr>
+      <th>4</th>
+      <th>Team D</th>  <!-- Team Name -->
+      <th>0</th> <!-- Played -->
+      <th>0</th> <!-- Won -->
+      <th>0</th> <!-- Lost -->
+      <th>0</th> <!-- Points -->
+    </tr>
+  </table>
+  </div>
+</div>
+
+<button onclick="myFunction()">Try it</button>
+
+<script>
+function myFunction() {
+    var card = document.createElement("div");
+    card.setAttribute("class", "w3-card-4 w3-margin w3-white");
+
+    var cardHeading = document.createElement("div");
+    cardHeading.setAttribute("class", "w3-container w3-padding-8");
+    var h3 = document.createElement("h3");
+    var h5 = document.createElement("h5");
+    var playedText = document.createTextNode("Played: 02/03/2017");
+    var b = document.createElement("b");
+    var t = document.createTextNode("Team A vs Team B");
+    b.appendChild(t)
+    h3.appendChild(b);
+    h5.appendChild(playedText);
+    cardHeading.appendChild(h3);
+    cardHeading.appendChild(h5);
+
+    var cardBody = document.createElement("div");
+    cardBody.setAttribute("class", "w3-container");
+    var cardBodyText = document.createTextNode("Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.");
+    var cardBodyP = document.createElement("p");
+    cardBodyP.appendChild(cardBodyText);
+    cardBody.appendChild(cardBodyP);
+
+    var cardTitleText = document.createTextNode("Game Info");
+    var cardTitle = document.createElement("div");
+    cardTitle.setAttribute("class", "w3-container");
+    cardTitle.appendChild(cardTitleText);
+
+    card.appendChild(cardTitle);
+    card.appendChild(cardHeading);
+    card.appendChild(cardBody);
+    document.getElementById('blog-entries').appendChild(card);
+    console.log(card);
+}
+</script>
+<!-- Grid -->
+<div class="w3-row">
+
+<!-- Blog entries -->
+<div class="w3-col l8 s12" id="blog-entries">
+
+  <!-- Blog entry
+  <div class="w3-card-4 w3-margin w3-white">
+  <div class="w3-container">Game info</div>
+    <div class="w3-container w3-padding-8">
+      <h3><b>Team A vs Team B</b></h3>
+      <h5>Played: <span class="w3-opacity">March 2, 2017</span></h5>
+    </div>
+
+    <div class="w3-container">
+      <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed
+        tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+      <div class="w3-row">
+        <div class="w3-col m8 s12">
+          <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE &raquo;</b></button></p>
+        </div>
+        <div class="w3-col m4 w3-hide-small">
+          <p><span class="w3-padding-large w3-right"><b>Comments &nbsp;</b> <span class="w3-badge">2</span></span></p>
+        </div>
+      </div>
+    </div>
+  </div>-->
+</div>
+
+<!-- Introduction menu -->
+<div class="w3-col l4">
+  <!-- About Card -->
+  <div class="w3-card-2 w3-margin w3-margin-top">
+    <div class="w3-container">Season info</div>
+    <div class="w3-container w3-white">
+      <h4><b>Current Season: 1</b></h4>
+      <p>Running from <b>02/03/2017</b> to <b>09/04/2017</b></p>
+    </div>
+  </div><hr>
+
+  <!-- Teams -->
+  <div class="w3-card-2 w3-margin">
+    <div class="w3-container w3-padding">
+      <h4>Teams</h4>
+    </div>
+    <ul class="w3-ul w3-hoverable w3-white">
+      <li class="w3-padding-16">
+        <img src="/w3images/workshop.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Team A</span><br>
+        <span>View Games</span>
+      </li>
+      <li class="w3-padding-16">
+        <img src="/w3images/gondol.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Team B</span><br>
+        <span>View Games</span>
+      </li>
+      <li class="w3-padding-16">
+        <img src="/w3images/skies.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Team C</span><br>
+        <span>View Games</span>
+      </li>
+      <li class="w3-padding-16 w3-hide-medium w3-hide-small">
+        <img src="/w3images/rock.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Team D</span><br>
+        <span>View Games</span>
+      </li>
+    </ul>
+  </div>
+  <hr>
+
+<!-- END Introduction Menu -->
+</div>
+
+<!-- END GRID -->
+</div><br>
+
+<!-- END w3-content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+</footer>
+
+</body>
+</html>
