@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 var mongo = require('mongodb');
 var monk = require('monk');
@@ -21,33 +24,50 @@ app.get('/', function (req, res) {
   res.sendFile( __dirname + "/" + "index.html");
 })
 
-var currentStandings = {
-    /*
-    team: played, won, lost, points
-    */
-    teamA: ['5', '3', '2', '3'],
-    teamB: ['4', '2', '2', '3']
-};
+app.get('/game_entry', function (req, res) {
+  res.render('game_entry');
+})
 
-var data = {
-    games: [
-    {
-      gameDate: '03/04/2017',
-      gameTitle: 'Team A vs Team B',
-      gameInfo: 'This is the info'
-    },
-    {
-      gameDate: '06/10/2017',
-      gameTitle: 'Team C vs Team D',
-      gameInfo: 'This is the info'
-    }]
-};
+/* POST to Add User Service */
+app.post('/addgame', function(req, res) {
+  // Set our internal DB variable
+  var db = req.db;
+
+  // Get our form values. These rely on the "name" attributes
+  var matchID = req.body.matchID;
+  var played = req.body.played;
+  var team1 = req.body.team1;
+  var team2 = req.body.team2;
+  var winner = req.body.winner;
+
+  // Set our collection
+  var collection = db.get('games');
+
+  // Submit to the DB
+  collection.insert({
+      "matchID": matchID,
+      "team1" : team1,
+      "team2" : team2,
+      "winner": winner,
+      "played": played,
+      "season": "1"
+  }, function (err, doc) {
+      if (err) {
+          // If it failed, return error
+          res.send("There was a problem adding the information to the database.");
+      }
+      else {
+          // And forward to success page
+          res.redirect("/jade");
+      }
+  });
+});
 
 app.get('/jade', function (req, res) {
   var db = req.db;
   var collection = db.get('games');
   collection.find({},{},function(e,docs){
-    res.render('layout', { test: JSON.stringify(data), standings:  currentStandings, games : JSON.stringify(docs)} );
+    res.render('layout', { games : JSON.stringify(docs)} );
   });
 })
 
