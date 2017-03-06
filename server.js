@@ -11,6 +11,14 @@ app.get('/', function (req, res) {
   res.sendFile( __dirname + "/" + "index.html");
 })
 
+var currentStandings = {
+    /*
+    team: played, won, lost, points
+    */
+    teamA: ['5', '3', '2', '3'],
+    teamB: ['4', '2', '2', '3']
+};
+
 var data = {
     games: [
     {
@@ -26,7 +34,7 @@ var data = {
 };
 
 app.get('/jade', function (req, res) {
-  res.render('layout', { test: JSON.stringify(data) } );
+  res.render('layout', { test: JSON.stringify(data), standings:  JSON.stringify(currentStandings)} );
 })
 
 var server = app.listen(8081, function () {
