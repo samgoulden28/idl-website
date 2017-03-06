@@ -7,7 +7,7 @@ html
   link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
   style.
     body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-  body.w3-light-grey(onload='myFunction()')
+  body.w3-light-grey(onload='printGamesFromJSON()')
     // Navbar
     .w3-top
       .w3-bar.w3-grey.w3-card-2
@@ -104,16 +104,23 @@ html
               // Points
       button(onclick='myFunction()') Try it
       script.
-        function myFunction() {
+        function printGamesFromJSON() {
+          var json = !{test};
+          for (var game in json.games) {
+            console.log("GAME: " + game)
+            printGameCard(json.games[game]);
+          }
+        }
+        function printGameCard(game) {
         var card = document.createElement("div");
         card.setAttribute("class", "w3-card-4 w3-margin w3-white");
         var cardHeading = document.createElement("div");
         cardHeading.setAttribute("class", "w3-container w3-padding-8");
         var h3 = document.createElement("h3");
         var h5 = document.createElement("h5");
-        var playedText = document.createTextNode("Played: 02/03/2017");
+        var playedText = document.createTextNode("Played: " + game.gameDate);
         var b = document.createElement("b");
-        var t = document.createTextNode("Team A vs Team B");
+        var t = document.createTextNode(game.gameTitle);
         b.appendChild(t)
         h3.appendChild(b);
         h5.appendChild(playedText);
@@ -121,7 +128,7 @@ html
         cardHeading.appendChild(h5);
         var cardBody = document.createElement("div");
         cardBody.setAttribute("class", "w3-container");
-        var cardBodyText = document.createTextNode("Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.");
+        var cardBodyText = document.createTextNode(game.gameInfo);
         var cardBodyP = document.createElement("p");
         cardBodyP.appendChild(cardBodyText);
         cardBody.appendChild(cardBodyP);
