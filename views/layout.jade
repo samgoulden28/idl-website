@@ -1,0 +1,211 @@
+doctype html
+html
+  title IDL - IBM Dota League
+  meta(charset='UTF-8')
+  meta(name='viewport', content='width=device-width, initial-scale=1')
+  link(rel='stylesheet', href='w3.css')
+  link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
+  style.
+    body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+  body.w3-light-grey(onload='myFunction()')
+    // Navbar
+    .w3-top
+      .w3-bar.w3-grey.w3-card-2
+        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-medium.w3-hide-large.w3-opennav.w3-right(href='javascript:void(0)', onclick='myFunction()', title='Toggle Navigation Menu')
+          i.fa.fa-bars
+        a.w3-bar-item.w3-button.w3-padding-large(href='#') LINK1
+        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='#band') LINK2
+        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='#tour') LINK3
+        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='#contact') LINK4
+        .w3-hide-small.w3-dropdown-hover
+          a.w3-padding-large.w3-button(href='javascript:void(0)', title='More')
+            | MORE
+            i.fa.fa-caret-down
+          .w3-dropdown-content.w3-white.w3-card-4
+            a(href='#') Merchandise
+            a(href='#') Extras
+            a(href='#') Media
+        a.w3-padding-large.w3-hover-red.w3-hide-small.w3-right(href='javascript:void(0)')
+          i.fa.fa-search
+    //
+      w3-content defines a container for fixed size centered content,
+      and is wrapped around the whole page content, except for the footer in this example
+    .w3-content(style='max-width:1400px')
+      // Header
+      header.w3-container.w3-center.w3-padding-64
+        h1
+          b IBM DOTA LEAGUE
+        p Home of the IDL
+      // Current Standings
+      .w3-card-4.w3-center.w3-white
+        .w3-container.w3-center.w3-padding-8
+          h3
+            b CURRENT STANDINGS
+          h5
+            | LAST UPDATED
+            span.w3-opacity 04/03/2017
+        .w3-container.w3-padding-16
+          table.w3-table-all
+            tr
+              th Position
+              th Team
+              th Played
+              th Won
+              th Lost
+              th Points
+            tr
+              th 1
+              // Position
+              th Team A
+              // Team Name
+              th 0
+              // Played
+              th 0
+              // Won
+              th 0
+              // Lost
+              th 0
+              // Points
+            tr
+              th 2
+              th Team B
+              // Team Name
+              th 0
+              // Played
+              th 0
+              // Won
+              th 0
+              // Lost
+              th 0
+              // Points
+            tr
+              th 3
+              th Team C
+              // Team Name
+              th 0
+              // Played
+              th 0
+              // Won
+              th 0
+              // Lost
+              th 0
+              // Points
+            tr
+              th 4
+              th Team D
+              // Team Name
+              th 0
+              // Played
+              th 0
+              // Won
+              th 0
+              // Lost
+              th 0
+              // Points
+      button(onclick='myFunction()') Try it
+      script.
+        function myFunction() {
+        var card = document.createElement("div");
+        card.setAttribute("class", "w3-card-4 w3-margin w3-white");
+        var cardHeading = document.createElement("div");
+        cardHeading.setAttribute("class", "w3-container w3-padding-8");
+        var h3 = document.createElement("h3");
+        var h5 = document.createElement("h5");
+        var playedText = document.createTextNode("Played: 02/03/2017");
+        var b = document.createElement("b");
+        var t = document.createTextNode("Team A vs Team B");
+        b.appendChild(t)
+        h3.appendChild(b);
+        h5.appendChild(playedText);
+        cardHeading.appendChild(h3);
+        cardHeading.appendChild(h5);
+        var cardBody = document.createElement("div");
+        cardBody.setAttribute("class", "w3-container");
+        var cardBodyText = document.createTextNode("Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.");
+        var cardBodyP = document.createElement("p");
+        cardBodyP.appendChild(cardBodyText);
+        cardBody.appendChild(cardBodyP);
+        var cardTitleText = document.createTextNode("Game Info");
+        var cardTitle = document.createElement("div");
+        cardTitle.setAttribute("class", "w3-container");
+        cardTitle.appendChild(cardTitleText);
+        card.appendChild(cardTitle);
+        card.appendChild(cardHeading);
+        card.appendChild(cardBody);
+        document.getElementById('blog-entries').appendChild(card);
+        console.log(card);
+        }
+      // Grid
+      .w3-row
+        // Blog entries
+        #blog-entries.w3-col.l8.s12
+          //
+            Blog entry
+            <div class="w3-card-4 w3-margin w3-white">
+            <div class="w3-container">Game info</div>
+            <div class="w3-container w3-padding-8">
+            <h3><b>Team A vs Team B</b></h3>
+            <h5>Played: <span class="w3-opacity">March 2, 2017</span></h5>
+            </div>
+            <div class="w3-container">
+            <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed
+            tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+            <div class="w3-row">
+            <div class="w3-col m8 s12">
+            <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE &raquo;</b></button></p>
+            </div>
+            <div class="w3-col m4 w3-hide-small">
+            <p><span class="w3-padding-large w3-right"><b>Comments &nbsp;</b> <span class="w3-badge">2</span></span></p>
+            </div>
+            </div>
+            </div>
+            </div>
+        // Introduction menu
+        .w3-col.l4
+          // About Card
+          .w3-card-2.w3-margin.w3-margin-top
+            .w3-container Season info
+            .w3-container.w3-white
+              h4
+                b Current Season: 1
+              p
+                | Running from
+                b 02/03/2017
+                |  to
+                b 09/04/2017
+          hr
+          // Teams
+          .w3-card-2.w3-margin
+            .w3-container.w3-padding
+              h4 Teams
+            ul.w3-ul.w3-hoverable.w3-white
+              li.w3-padding-16
+                img.w3-left.w3-margin-right(src='/w3images/workshop.jpg', alt='Image', style='width:50px')
+                span.w3-large Team A
+                br
+                span View Games
+              li.w3-padding-16
+                img.w3-left.w3-margin-right(src='/w3images/gondol.jpg', alt='Image', style='width:50px')
+                span.w3-large Team B
+                br
+                span View Games
+              li.w3-padding-16
+                img.w3-left.w3-margin-right(src='/w3images/skies.jpg', alt='Image', style='width:50px')
+                span.w3-large Team C
+                br
+                span View Games
+              li.w3-padding-16.w3-hide-medium.w3-hide-small
+                img.w3-left.w3-margin-right(src='/w3images/rock.jpg', alt='Image', style='width:50px')
+                span.w3-large Team D
+                br
+                span View Games
+          hr
+          // END Introduction Menu
+        // END GRID
+      br
+      // END w3-content
+    // Footer
+    footer.w3-container.w3-dark-grey.w3-padding-32.w3-margin-top
+      p
+        | Powered by
+        a(href='https://www.w3schools.com/w3css/default.asp', target='_blank') w3.css
