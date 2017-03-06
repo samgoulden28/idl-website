@@ -55,18 +55,21 @@ html
               th Lost
               th Points
             tr
-              th 1
-              // Position
-              th Team A
-              // Team Name
-              th 0
-              // Played
-              th 0
-              // Won
-              th 0
-              // Lost
-              th 0
-              // Points
+              //- each user, i in userlist
+              //-   th
+              //-     a(href="mailto:#{user.email}")= user.username
+              //- th 1
+              //- // Position
+              //- th Team A
+              //- // Team Name
+              //- th 0
+              //- // Played
+              //- th 0
+              //- // Won
+              //- th 0
+              //- // Lost
+              //- th 0
+              //- // Points
             tr
               th 2
               th Team B
@@ -106,10 +109,10 @@ html
       button(onclick='myFunction()') Try it
       script.
         function printGamesFromJSON() {
-          var json = !{test};
-          for (var game in json.games) {
+          var json = !{games};
+          for (var game in json) {
             console.log("GAME: " + game)
-            printGameCard(json.games[game]);
+            printGameCard(json[game]);
           }
         }
         function printGameCard(game) {
@@ -119,9 +122,9 @@ html
         cardHeading.setAttribute("class", "w3-container w3-padding-8");
         var h3 = document.createElement("h3");
         var h5 = document.createElement("h5");
-        var playedText = document.createTextNode("Played: " + game.gameDate);
+        var playedText = document.createTextNode("Played: " + game.played);
         var b = document.createElement("b");
-        var t = document.createTextNode(game.gameTitle);
+        var t = document.createTextNode(game.team1 + " vs " + game.team2);
         b.appendChild(t)
         h3.appendChild(b);
         h5.appendChild(playedText);
@@ -129,7 +132,7 @@ html
         cardHeading.appendChild(h5);
         var cardBody = document.createElement("div");
         cardBody.setAttribute("class", "w3-container");
-        var cardBodyText = document.createTextNode(game.gameInfo);
+        var cardBodyText = document.createTextNode("Winner: " + game.winner);
         var cardBodyP = document.createElement("p");
         cardBodyP.appendChild(cardBodyText);
         cardBody.appendChild(cardBodyP);
