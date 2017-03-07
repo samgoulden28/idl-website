@@ -108,6 +108,25 @@ html
               // Points
       button(onclick='myFunction()') Try it
       script.
+        var teamStats = {
+          "won" : { "Team A": "0",
+                    "Team B": "0",
+                    "Team C": "0",
+                    "Team D": "0",
+                  },
+          "played" : { "Team A": "0",
+                     "Team B": "0",
+                     "Team C": "0",
+                     "Team D": "0",
+                   },
+        }
+        function calculatePositionsInTable() {
+          var json = !{games};
+          for (var game in json) {
+            console.log("GAME: " + game)
+            printGameCard(json[game]);
+          }
+        }
         function printGamesFromJSON() {
           var json = !{games};
           for (var game in json) {
