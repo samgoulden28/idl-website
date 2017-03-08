@@ -39,12 +39,16 @@ app.post('/addgame', function(req, res) {
   var team1 = req.body.team1;
   var team2 = req.body.team2;
   var winner = req.body.winner;
+  var game_no = req.body.game_no;
+  var game_total = req.body.game_total;
 
   // Set our collection
   var collection = db.get('games');
 
   // Submit to the DB
   collection.insert({
+      "game_no": game_no,
+      "game_total": game_total,
       "matchID": matchID,
       "team1" : team1,
       "team2" : team2,
@@ -80,12 +84,23 @@ app.get('/jade', function (req, res) {
                }
     }
     for (var game in docs) {
-      var teamPositions = { "first" : "Team A", "second" : "Team B", "third" : "Team C", "fourth" : "Team D" }
       teamStats.played[docs[game].team1] += 1;
       teamStats.played[docs[game].team2] += 1;
       teamStats.won[docs[game].winner] += 1;
     }
-    console.log("Team Stats: " + JSON.stringify(teamStats));
+    var teamPositions = [ "Team A", "Team B", "Team C", "Team D" ];
+    do {
+        swapped = false;
+        for (var i=0; i < teamPositions.length-1; i++) {
+            if (teamStats.won[teamPositions[i]] < teamStats.won[teamPositions[i+1]]) {
+                var temp = teamPositions[i];
+                teamPositions[i] = teamPositions[i+1];
+                teamPositions[i+1] = temp;
+                swapped = true;
+            }
+        }
+    } while (swapped);
+    console.log("Team Stats: " + JSON.stringify(teamStats) + "Positions: " + teamPositions);
     res.render('layout', { games : JSON.stringify(docs), teamStats: teamStats, teamPositions: teamPositions } );
   });
 })
