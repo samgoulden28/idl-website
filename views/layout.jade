@@ -7,7 +7,7 @@ html
   link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
   style.
     body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-  body.w3-light-grey(onload='printGamesFromJSON(); calculatePositionsInTable();')
+  body.w3-light-grey(onload='printGamesFromJSON();')
     // Navbar
     .w3-top
       .w3-bar.w3-grey.w3-card-2
@@ -42,9 +42,6 @@ html
         .w3-container.w3-center.w3-padding-8
           h3
             b CURRENT STANDINGS
-          h5
-            | LAST UPDATED
-            span.w3-opacity 04/03/2017
         .w3-container.w3-padding-16
           table.w3-table-all
             tr
@@ -58,7 +55,7 @@ html
               // Position
               th 1 
               // Team Name
-              - var team_pos = teamPositions.first;
+              - var team_pos = teamPositions[0];
               th #{team_pos}
               // Played
               th #{teamStats.played[team_pos]}
@@ -70,7 +67,7 @@ html
               th #{teamStats.won[team_pos]}
             tr
               th 2
-              - var team_pos = teamPositions.second;
+              - var team_pos = teamPositions[1];
               th #{team_pos}
               // Played
               th #{teamStats.played[team_pos]}
@@ -82,7 +79,7 @@ html
               th #{teamStats.won[team_pos]}
             tr
               th 3
-              - var team_pos = teamPositions.third;
+              - var team_pos = teamPositions[2];
               th #{team_pos}
               // Played
               th #{teamStats.played[team_pos]}
@@ -94,7 +91,7 @@ html
               th #{teamStats.won[team_pos]}
             tr
               th 4
-              - var team_pos = teamPositions.fourth;
+              - var team_pos = teamPositions[3];
               th #{team_pos}
               // Played
               th #{teamStats.played[team_pos]}
@@ -106,16 +103,6 @@ html
               th #{teamStats.won[team_pos]}
       button(onclick='myFunction()') Try it
       script.
-        
-        function calculatePositionsInTable() {
-          var json = !{games};
-          //- for (var game in json) {
-          //-   teamStats.played[json[game].team1] += 1;
-          //-   teamStats.played[json[game].team2] += 1;
-          //-   teamStats.won[json[game].winner] += 1;
-          //-   console.log("Team Stats: " + JSON.stringify(teamStats));
-          //- }
-        }
         function printGamesFromJSON() {
           var json = !{games};
           for (var game in json) {
@@ -140,11 +127,14 @@ html
         cardHeading.appendChild(h5);
         var cardBody = document.createElement("div");
         cardBody.setAttribute("class", "w3-container");
-        var cardBodyText = document.createTextNode("Winner: " + game.winner);
+        var cardBodyText1 = document.createTextNode("Winner: " + game.winner);
+        var cardBodyText2 = document.createTextNode("Match ID: " + game.matchID);
         var cardBodyP = document.createElement("p");
-        cardBodyP.appendChild(cardBodyText);
+        cardBodyP.appendChild(cardBodyText1);
+        cardBodyP.appendChild( document.createElement("div"));
+        cardBodyP.appendChild(cardBodyText2);
         cardBody.appendChild(cardBodyP);
-        var cardTitleText = document.createTextNode("Game Info");
+        var cardTitleText = document.createTextNode("Game " + game.game_no + " of " + game.game_total);
         var cardTitle = document.createElement("div");
         cardTitle.setAttribute("class", "w3-container");
         cardTitle.appendChild(cardTitleText);

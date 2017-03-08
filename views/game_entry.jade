@@ -41,6 +41,19 @@ html
         form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addgame', action='/addgame', method='post')
           h2.w3-center Enter a Game
           .w3-row.w3-section
+              | Game
+              select.w3-select.w3-border(name='game_no', style='width:10%')
+                option(value='1', selected='') 1
+                option(value='2') 2
+                option(value='3') 3
+                option(value='4') 4
+                option(value='5') 5
+              |      of      
+              select.w3-select.w3-border(name='game_total', style='width:10%')
+                option(value='1') 1
+                option(value='3', selected='') 3
+                option(value='5') 5
+          .w3-row.w3-section
             .w3-col(style='width:50px')
               i.w3-xxlarge.fa.fa-user
             .w3-rest
