@@ -66,8 +66,27 @@ app.post('/addgame', function(req, res) {
 app.get('/jade', function (req, res) {
   var db = req.db;
   var collection = db.get('games');
-  collection.find({},{},function(e,docs){
-    res.render('layout', { games : JSON.stringify(docs)} );
+  collection.find({},{},function(e,docs) {
+    var teamStats = {
+      "won" : { "Team A": 0,
+                "Team B": 0,
+                "Team C": 0,
+                "Team D": 0,
+              },
+      "played" : { "Team A": 0,
+                 "Team B": 0,
+                 "Team C": 0,
+                 "Team D": 0,
+               }
+    }
+    for (var game in docs) {
+      var teamPositions = { "first" : "Team A", "second" : "Team B", "third" : "Team C", "fourth" : "Team D" }
+      teamStats.played[docs[game].team1] += 1;
+      teamStats.played[docs[game].team2] += 1;
+      teamStats.won[docs[game].winner] += 1;
+    }
+    console.log("Team Stats: " + JSON.stringify(teamStats));
+    res.render('layout', { games : JSON.stringify(docs), teamStats: teamStats, teamPositions: teamPositions } );
   });
 })
 

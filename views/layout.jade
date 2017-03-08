@@ -7,7 +7,7 @@ html
   link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
   style.
     body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-  body.w3-light-grey(onload='printGamesFromJSON()')
+  body.w3-light-grey(onload='printGamesFromJSON(); calculatePositionsInTable();')
     // Navbar
     .w3-top
       .w3-bar.w3-grey.w3-card-2
@@ -55,77 +55,66 @@ html
               th Lost
               th Points
             tr
-              //- each user, i in userlist
-              //-   th
-              //-     a(href="mailto:#{user.email}")= user.username
-              //- th 1
-              //- // Position
-              //- th Team A
-              //- // Team Name
-              //- th 0
-              //- // Played
-              //- th 0
+              // Position
+              th 1 
+              // Team Name
+              - var team_pos = teamPositions.first;
+              th #{team_pos}
+              // Played
+              th #{teamStats.played[team_pos]}
               //- // Won
-              //- th 0
+              th #{teamStats.won[team_pos]}
               //- // Lost
-              //- th 0
+              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
               //- // Points
+              th #{teamStats.won[team_pos]}
             tr
               th 2
-              th Team B
-              // Team Name
-              th 0
+              - var team_pos = teamPositions.second;
+              th #{team_pos}
               // Played
-              th 0
-              // Won
-              th 0
-              // Lost
-              th 0
-              // Points
+              th #{teamStats.played[team_pos]}
+              //- // Won
+              th #{teamStats.won[team_pos]}
+              //- // Lost
+              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
+              //- // Points
+              th #{teamStats.won[team_pos]}
             tr
               th 3
-              th Team C
-              // Team Name
-              th 0
+              - var team_pos = teamPositions.third;
+              th #{team_pos}
               // Played
-              th 0
-              // Won
-              th 0
-              // Lost
-              th 0
-              // Points
+              th #{teamStats.played[team_pos]}
+              //- // Won
+              th #{teamStats.won[team_pos]}
+              //- // Lost
+              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
+              //- // Points
+              th #{teamStats.won[team_pos]}
             tr
               th 4
-              th Team D
-              // Team Name
-              th 0
+              - var team_pos = teamPositions.fourth;
+              th #{team_pos}
               // Played
-              th 0
-              // Won
-              th 0
-              // Lost
-              th 0
-              // Points
+              th #{teamStats.played[team_pos]}
+              //- // Won
+              th #{teamStats.won[team_pos]}
+              //- // Lost
+              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
+              //- // Points
+              th #{teamStats.won[team_pos]}
       button(onclick='myFunction()') Try it
       script.
-        var teamStats = {
-          "won" : { "Team A": "0",
-                    "Team B": "0",
-                    "Team C": "0",
-                    "Team D": "0",
-                  },
-          "played" : { "Team A": "0",
-                     "Team B": "0",
-                     "Team C": "0",
-                     "Team D": "0",
-                   },
-        }
+        
         function calculatePositionsInTable() {
           var json = !{games};
-          for (var game in json) {
-            console.log("GAME: " + game)
-            printGameCard(json[game]);
-          }
+          //- for (var game in json) {
+          //-   teamStats.played[json[game].team1] += 1;
+          //-   teamStats.played[json[game].team2] += 1;
+          //-   teamStats.won[json[game].winner] += 1;
+          //-   console.log("Team Stats: " + JSON.stringify(teamStats));
+          //- }
         }
         function printGamesFromJSON() {
           var json = !{games};
