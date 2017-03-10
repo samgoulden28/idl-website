@@ -7,7 +7,7 @@ html
   link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
   style.
     body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-  body.w3-light-grey(onload='printGamesFromJSON();')
+  body.w3-light-grey(onload='#{onloadfunction}')
     // Navbar
     .w3-top
       .w3-bar.w3-grey.w3-card-2
@@ -15,8 +15,7 @@ html
           i.fa.fa-bars
         a.w3-bar-item.w3-button.w3-padding-large(href='/') HOME
         a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='/game_entry') ADD A GAME
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='#tour') LINK3
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='#contact') LINK4
+        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='/game_delete') DELETE A GAME
         .w3-hide-small.w3-dropdown-hover
           a.w3-padding-large.w3-button(href='javascript:void(0)', title='More')
             | MORE
@@ -32,167 +31,10 @@ html
       and is wrapped around the whole page content, except for the footer in this example
     .w3-content(style='max-width:1400px')
       // Header
-      header.w3-container.w3-center.w3-padding-64
-        h1
-          b IBM DOTA LEAGUE
-        p Home of the IDL
-        iframe(src='http://streambadge.com/twitch/light/idluk/', style='border:none;height:5em;width:100%')
-      // Current Standings
-      .w3-card-4.w3-center.w3-white
-        .w3-container.w3-center.w3-padding-8
-          h3
-            b CURRENT STANDINGS
-        .w3-container.w3-padding-16
-          table.w3-table-all
-            tr
-              th Position
-              th Team
-              th Played
-              th Won
-              th Lost
-              th Points
-            tr
-              // Position
-              th 1 
-              // Team Name
-              - var team_pos = teamPositions[0];
-              th #{team_pos}
-              // Played
-              th #{teamStats.played[team_pos]}
-              //- // Won
-              th #{teamStats.won[team_pos]}
-              //- // Lost
-              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
-              //- // Points
-              th #{teamStats.won[team_pos]}
-            tr
-              th 2
-              - var team_pos = teamPositions[1];
-              th #{team_pos}
-              // Played
-              th #{teamStats.played[team_pos]}
-              //- // Won
-              th #{teamStats.won[team_pos]}
-              //- // Lost
-              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
-              //- // Points
-              th #{teamStats.won[team_pos]}
-            tr
-              th 3
-              - var team_pos = teamPositions[2];
-              th #{team_pos}
-              // Played
-              th #{teamStats.played[team_pos]}
-              //- // Won
-              th #{teamStats.won[team_pos]}
-              //- // Lost
-              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
-              //- // Points
-              th #{teamStats.won[team_pos]}
-            tr
-              th 4
-              - var team_pos = teamPositions[3];
-              th #{team_pos}
-              // Played
-              th #{teamStats.played[team_pos]}
-              //- // Won
-              th #{teamStats.won[team_pos]}
-              //- // Lost
-              th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
-              //- // Points
-              th #{teamStats.won[team_pos]}
-      button(onclick='myFunction()') Try it
-      script.
-        function printGamesFromJSON() {
-          var json = !{games};
-          for (var game in json) {
-            console.log("GAME: " + game)
-            printGameCard(json[game]);
-          }
-        }
-        function printGameCard(game) {
-        var card = document.createElement("div");
-        card.setAttribute("class", "w3-card-4 w3-margin w3-white");
-        var cardHeading = document.createElement("div");
-        cardHeading.setAttribute("class", "w3-container w3-padding-8");
-        var h3 = document.createElement("h3");
-        var h5 = document.createElement("h5");
-        var playedText = document.createTextNode("Played: " + game.played);
-        var b = document.createElement("b");
-        var t = document.createTextNode(game.team1 + " vs " + game.team2);
-        b.appendChild(t)
-        h3.appendChild(b);
-        h5.appendChild(playedText);
-        cardHeading.appendChild(h3);
-        cardHeading.appendChild(h5);
-        var cardBody = document.createElement("div");
-        cardBody.setAttribute("class", "w3-container");
-        var cardBodyText1 = document.createTextNode("Winner: " + game.winner);
-        var cardBodyText2 = document.createTextNode("Match ID: " + game.matchID);
-        var cardBodyP = document.createElement("p");
-        cardBodyP.appendChild(cardBodyText1);
-        cardBodyP.appendChild( document.createElement("div"));
-        cardBodyP.appendChild(cardBodyText2);
-        cardBody.appendChild(cardBodyP);
-        var cardTitleText = document.createTextNode("Game " + game.game_no + " of " + game.game_total);
-        var cardTitle = document.createElement("div");
-        cardTitle.setAttribute("class", "w3-container");
-        cardTitle.appendChild(cardTitleText);
-        card.appendChild(cardTitle);
-        card.appendChild(cardHeading);
-        card.appendChild(cardBody);
-        document.getElementById('blog-entries').appendChild(card);
-        console.log(card);
-        }
-      // Grid
-      .w3-row
-        // Blog entries
-        #blog-entries.w3-col.l8.s12
-        // Introduction menu
-        .w3-col.l4
-          // About Card
-          .w3-card-2.w3-margin.w3-margin-top
-            .w3-container Season info
-            .w3-container.w3-white
-              h4
-                b Current Season: 1
-              p
-                | Running from
-                b 02/03/2017
-                |  to
-                b 09/04/2017
-          hr
-          // Teams
-          .w3-card-2.w3-margin
-            .w3-container.w3-padding
-              h4 Teams
-            ul.w3-ul.w3-hoverable.w3-white
-              li.w3-padding-16
-                img.w3-left.w3-margin-right(src='/w3images/workshop.jpg', alt='Image', style='width:50px')
-                span.w3-large Team A
-                br
-                span View Games
-              li.w3-padding-16
-                img.w3-left.w3-margin-right(src='/w3images/gondol.jpg', alt='Image', style='width:50px')
-                span.w3-large Team B
-                br
-                span View Games
-              li.w3-padding-16
-                img.w3-left.w3-margin-right(src='/w3images/skies.jpg', alt='Image', style='width:50px')
-                span.w3-large Team C
-                br
-                span View Games
-              li.w3-padding-16.w3-hide-medium.w3-hide-small
-                img.w3-left.w3-margin-right(src='/w3images/rock.jpg', alt='Image', style='width:50px')
-                span.w3-large Team D
-                br
-                span View Games
-          hr
-          // END Introduction Menu
-        // END GRID
-      br
-      // END w3-content
-    // Footer
+      #header
+        block header
+      #content
+        block content
     footer.w3-container.w3-dark-grey.w3-padding-32.w3-margin-top
       p
         | Powered by

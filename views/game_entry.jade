@@ -1,101 +1,66 @@
-doctype html
-html
-  title W3.CSS Template
-  meta(charset='UTF-8')
-  meta(name='viewport', content='width=device-width, initial-scale=1')
-  link(rel='stylesheet', href='w3.css')
-  link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
-  style.
-    body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-  body.w3-light-grey(onload='myFunction()')
-    // Navbar
-    .w3-top
-      .w3-bar.w3-grey.w3-card-2
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-medium.w3-hide-large.w3-opennav.w3-right(href='javascript:void(0)', onclick='myFunction()', title='Toggle Navigation Menu')
-          i.fa.fa-bars
-          a.w3-bar-item.w3-button.w3-padding-large(href='/') HOME
-          a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='/game_entry') ADD A GAME
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='#tour') LINK3
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='#contact') LINK4
-        .w3-hide-small.w3-dropdown-hover
-          a.w3-padding-large.w3-button(href='javascript:void(0)', title='More')
-            | MORE 
-            i.fa.fa-caret-down
-          .w3-dropdown-content.w3-white.w3-card-4
-            a(href='#') Merchandise
-            a(href='#') Extras
-            a(href='#') Media
-        a.w3-padding-large.w3-hover-red.w3-hide-small.w3-right(href='javascript:void(0)')
-          i.fa.fa-search
-    //
-      w3-content defines a container for fixed size centered content,
-      and is wrapped around the whole page content, except for the footer in this example
-    .w3-content(style='max-width:1400px w3-padding-64')
-      // Header
-      header.w3-container.w3-center.w3-padding-64
-        h1
-          b IBM DOTA LEAGUE
-        p Enter Game Info
-      // Current Standings
-      .w3-card-4.w3-center.w3-white
-        form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addgame', action='/addgame', method='post')
-          h2.w3-center Enter a Game
-          .w3-row.w3-section
-              | Game
-              select.w3-select.w3-border(name='game_no', style='width:10%')
-                option(value='1', selected='') 1
-                option(value='2') 2
-                option(value='3') 3
-                option(value='4') 4
-                option(value='5') 5
-              |      of      
-              select.w3-select.w3-border(name='game_total', style='width:10%')
-                option(value='1') 1
-                option(value='3', selected='') 3
-                option(value='5') 5
-          .w3-row.w3-section
-            .w3-col(style='width:50px')
-              i.w3-xxlarge.fa.fa-user
-            .w3-rest
-              input.w3-input.w3-border(name='matchID', type='text', placeholder='Match ID')
-          .w3-row.w3-section
-            .w3-col(style='width:50px')
-              i.w3-xxlarge.fa.fa-user
-            .w3-rest
-              input.w3-input.w3-border(name='played', type='text', placeholder='Date Played')
-          .w3-row.w3-section
-            select.w3-select.w3-border.w3-half(name='team1')
-              option(value='', disabled='', selected='') Team 1
-              option(value='Team A') Team A
-              option(value='Team B') Team B
-              option(value='Team C') Team C
-              option(value='Team D') Team D
-            select.w3-select.w3-border.w3-half(name='team2')
-              option(value='', disabled='', selected='') Team 2
-              option(value='Team A') Team A
-              option(value='Team B') Team B
-              option(value='Team C') Team C
-              option(value='Team D') Team D
-          .w3-row.w3-section
-            select.w3-select.w3-border(name='winner')
-              option(value='', disabled='', selected='') Winner
-              option(value='Team A') Team A
-              option(value='Team B') Team B
-              option(value='Team C') Team C
-              option(value='Team D') Team D
-          .w3-row.w3-section
-            .w3-col(style='width:50px')
-              i.w3-xxlarge.fa.fa-pencil
-            .w3-rest
-              p
-                label.w3-label
-                  b Upload Replay File
-                input(type='file', name='replay')
-              p
-          button.w3-btn-block.w3-section.w3-blue.w3-ripple.w3-padding Send
-    // END w3-content
-    // Footer
-    footer.w3-container.w3-dark-grey.w3-padding-32.w3-margin-top
-      p
-        | Powered by 
-        a(href='https://www.w3schools.com/w3css/default.asp', target='_blank') w3.css
+extends ./layout
+
+block header
+  header.w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Enter Game Info
+    
+block content
+  // Enter a game
+  .w3-card-4.w3-center.w3-white
+    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addgame', action='/addgame', method='post')
+      h2.w3-center Enter a Game
+      .w3-row.w3-section
+          | Game
+          select.w3-select.w3-border(name='game_no', style='width:10%')
+            option(value='1', selected='') 1
+            option(value='2') 2
+            option(value='3') 3
+            option(value='4') 4
+            option(value='5') 5
+          |      of      
+          select.w3-select.w3-border(name='game_total', style='width:10%')
+            option(value='1') 1
+            option(value='3', selected='') 3
+            option(value='5') 5
+      .w3-row.w3-section
+        .w3-col(style='width:50px')
+          i.w3-xxlarge.fa.fa-user
+        .w3-rest
+          input.w3-input.w3-border(name='matchID', type='text', placeholder='Match ID')
+      .w3-row.w3-section
+        .w3-col(style='width:50px')
+          i.w3-xxlarge.fa.fa-user
+        .w3-rest
+          input.w3-input.w3-border(name='played', type='text', placeholder='Date Played')
+      .w3-row.w3-section
+        select.w3-select.w3-border.w3-half(name='team1')
+          option(value='', disabled='', selected='') Team 1
+          option(value='Team A') Team A
+          option(value='Team B') Team B
+          option(value='Team C') Team C
+          option(value='Team D') Team D
+        select.w3-select.w3-border.w3-half(name='team2')
+          option(value='', disabled='', selected='') Team 2
+          option(value='Team A') Team A
+          option(value='Team B') Team B
+          option(value='Team C') Team C
+          option(value='Team D') Team D
+      .w3-row.w3-section
+        select.w3-select.w3-border(name='winner')
+          option(value='', disabled='', selected='') Winner
+          option(value='Team A') Team A
+          option(value='Team B') Team B
+          option(value='Team C') Team C
+          option(value='Team D') Team D
+      .w3-row.w3-section
+        .w3-col(style='width:50px')
+          i.w3-xxlarge.fa.fa-pencil
+        .w3-rest
+          p
+            label.w3-label
+              b Upload Replay File
+            input(type='file', name='replay')
+          p
+      button.w3-btn-block.w3-section.w3-blue.w3-ripple.w3-padding Send

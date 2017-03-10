@@ -1,0 +1,20 @@
+extends ./layout
+
+block header
+  header.w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Delete a Game
+
+block content
+  
+  // Enter a game
+  .w3-card-4.w3-center.w3-white
+    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'deletegame', action='/deletegame', method='post')
+      h2.w3-center Choose a Game to delete
+      .w3-row.w3-section
+        select.w3-select.w3-border.w3-half(name='gameID')
+          option(value='0', selected='') Choose a game
+          - for(var i in games)
+            option(value='#{games[i]._id}') #{games[i].matchID}, Game #{games[i].game_no} of #{games[i].game_total}, #{games[i].team1} vs #{games[i].team2}, Winner: #{games[i].winner}, Played: #{games[i].played}
+      button.w3-btn-block.w3-section.w3-blue.w3-ripple.w3-padding Send

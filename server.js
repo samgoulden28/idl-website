@@ -6,6 +6,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 var mongo = require('mongodb');
+var ObjectId = require("mongodb").ObjectID;
 var monk = require('monk');
 var db = monk('localhost:27017/test1');
 
@@ -19,13 +20,38 @@ app.use(function(req,res,next){
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
 
-
-app.get('/', function (req, res) {
-  res.sendFile( __dirname + "/" + "index.html");
-})
-
 app.get('/game_entry', function (req, res) {
   res.render('game_entry');
+})
+
+app.get('/game_delete', function (req, res) {
+  var db = req.db;
+  var collection = db.get('games');
+  collection.find({},{},function(e,docs) {
+    res.render('game_delete', { games: docs } );
+  });
+})
+
+app.post('/deletegame', function (req, res) {
+  var db = req.db;
+
+  // Get our game ID to delete values.
+  var gameID = req.body.gameID;
+
+  var collection = db.get('games');
+
+  // Submit to the DB
+  collection.remove({"_id": ObjectId(req.body.gameID)} , function (err, doc) {
+      if (err) {
+          // If it failed, return error
+          res.send("There was a problem deleting the game from the database.");
+      }
+      else {
+          console.log("Game " + gameID + " deleted");
+          // And forward to success page
+          res.redirect("/");
+      }
+  });
 })
 
 /* POST to Add User Service */
@@ -62,12 +88,12 @@ app.post('/addgame', function(req, res) {
       }
       else {
           // And forward to success page
-          res.redirect("/jade");
+          res.redirect("/");
       }
   });
 });
 
-app.get('/jade', function (req, res) {
+app.get('/', function (req, res) {
   var db = req.db;
   var collection = db.get('games');
   collection.find({},{},function(e,docs) {
@@ -101,7 +127,7 @@ app.get('/jade', function (req, res) {
         }
     } while (swapped);
     console.log("Team Stats: " + JSON.stringify(teamStats) + "Positions: " + teamPositions);
-    res.render('layout', { games : JSON.stringify(docs), teamStats: teamStats, teamPositions: teamPositions } );
+    res.render('index', { games : JSON.stringify(docs), teamStats: teamStats, teamPositions: teamPositions, onloadfunction: 'printGamesFromJSON()'} );
   });
 })
 
