@@ -9,51 +9,47 @@ block header
 block content
   // Enter a game
   .w3-card-4.w3-center.w3-white
-    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addgame', action='/addgame', method='post')
+    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'do_editgame', action='/do_editgame', method='post')
       h2.w3-center Enter a Game
+      input(type="hidden" name="gameID" value="#{game._id}")
       .w3-row.w3-section
           | Game
           select.w3-select.w3-border(name='game_no', style='width:10%')
-            option(value='1', selected='') 1
-            option(value='2') 2
-            option(value='3') 3
-            option(value='4') 4
-            option(value='5') 5
+            - for (var i = 1; i <= 5; i++)
+              - var select=null; if (i == game.game_no) select='selected';
+              option(value=i, selected=select)= i
           |      of      
           select.w3-select.w3-border(name='game_total', style='width:10%')
-            option(value='1') 1
-            option(value='3', selected='') 3
-            option(value='5') 5
+            - for (var i = 1; i <= 5; i+=2)
+              - var select=null; if (i == game.game_total) select='selected';
+              option(value=i, selected=select)= i
       .w3-row.w3-section
         .w3-col(style='width:50px')
           i.w3-xxlarge.fa.fa-user
         .w3-rest
-          input.w3-input.w3-border(name='matchID', type='text', placeholder='Match ID')
+          input.w3-input.w3-border(name='matchID', type='text', value='#{game.matchID}')
       .w3-row.w3-section
         .w3-col(style='width:50px')
           i.w3-xxlarge.fa.fa-user
         .w3-rest
-          input.w3-input.w3-border(name='played', type='date', placeholder='Date Played')
+          input.w3-input.w3-border(name='played', type='date', value='#{game.played}')
       .w3-row.w3-section
         select.w3-select.w3-border.w3-half(name='team1')
-          option(value='', disabled='', selected='') Team 1
-          option(value='Team A') Team A
-          option(value='Team B') Team B
-          option(value='Team C') Team C
-          option(value='Team D') Team D
+          option(value='', disabled='') Team 1
+            each team in teams
+              - var select=null; if (team == game.team1) select='selected';
+              option(value=team, selected=select)= team
         select.w3-select.w3-border.w3-half(name='team2')
           option(value='', disabled='', selected='') Team 2
-          option(value='Team A') Team A
-          option(value='Team B') Team B
-          option(value='Team C') Team C
-          option(value='Team D') Team D
+            each team in teams
+              - var select=null; if (team == game.team2) select='selected';
+              option(value=team, selected=select)= team
       .w3-row.w3-section
         select.w3-select.w3-border(name='winner')
           option(value='', disabled='', selected='') Winner
-          option(value='Team A') Team A
-          option(value='Team B') Team B
-          option(value='Team C') Team C
-          option(value='Team D') Team D
+            each team in teams
+              - var select=null; if (team == game.winner) select='selected';
+              option(value=team, selected=select)= team
       .w3-row.w3-section
         .w3-col(style='width:50px')
           i.w3-xxlarge.fa.fa-pencil

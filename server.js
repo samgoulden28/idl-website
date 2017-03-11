@@ -12,6 +12,7 @@ var monk = require('monk');
 var db = monk(config.mongodb.host + ':' + config.mongodb.port + '/' + config.mongodb.db_name);
 
 app.use(express.static('public'));
+
 // Make our db accessible to our router
 app.use(function(req,res,next){
     req.db = db;
@@ -21,12 +22,93 @@ app.use(function(req,res,next){
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
 
+var teams = [ "Team A", "Team B", "Team C", "Team D" ];
+
 function passwordCorrect(given_password) {
   return given_password === config.access.password;
 }
 
 app.get('/game_entry', function (req, res) {
   res.render('game_entry');
+})
+
+app.get('/game_edit', function (req, res) {
+  var db = req.db;
+  var collection = db.get('games');
+  collection.find({},{},function(e,docs) {
+    res.render('game_edit', { games: docs } );
+  });
+})
+
+app.post('/editgame', function (req, res) {
+  var db = req.db;
+
+  //Check the user has provided the correct password
+  var password = req.body.password;
+  // Get our game ID to delete values.
+  var gameID = req.body.gameID;
+
+  var collection = db.get('games');
+
+  // Submit to the DB
+  collection.findOne({"_id": ObjectId(req.body.gameID)}, {},  function (err, doc) {
+      if (err) {
+          // If it failed, return error
+          res.send("There was a problem getting the game from the database.");
+      }
+      else {
+          console.log("Game " + gameID + " deleted");
+          // Render the edit page
+          res.render("game_edit2", { game: doc, teams: teams });
+      }
+  });
+})
+
+app.post('/do_editgame', function (req, res) {
+  var db = req.db;
+
+  //Check the user has provided the correct password
+  var password = req.body.password;
+
+  if (!passwordCorrect(password)) {
+    res.send("Incorrect password supplied.");
+  } else {
+    // Get our game ID to update values.
+    var gameID = req.body.gameID;
+
+    // Get our form values. These rely on the "name" attributes
+    var matchID = req.body.matchID;
+    var played = req.body.played;
+    var team1 = req.body.team1;
+    var team2 = req.body.team2;
+    var winner = req.body.winner;
+    var game_no = req.body.game_no;
+    var game_total = req.body.game_total;
+
+    var collection = db.get('games');
+
+    // Update the record in the DB
+    collection.update({"_id": ObjectId(req.body.gameID)},
+    {
+        "game_no": game_no,
+        "game_total": game_total,
+        "matchID": matchID,
+        "team1" : team1,
+        "team2" : team2,
+        "winner": winner,
+        "played": played,
+    },  function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem updating the game to the database.");
+        }
+        else {
+            console.log("Game " + gameID + " updated");
+            // Render the edit page
+            res.redirect("/");
+        }
+    });
+  }
 })
 
 app.get('/game_delete', function (req, res) {
@@ -116,7 +198,7 @@ app.post('/addgame', function(req, res) {
 app.get('/', function (req, res) {
   var db = req.db;
   var collection = db.get('games');
-  collection.find({},{},function(e,docs) {
+  collection.find({}, {"sort" : [['played', 'desc']]}, function(e,docs) {
     var teamStats = {
       "won" : { "Team A": 0,
                 "Team B": 0,
