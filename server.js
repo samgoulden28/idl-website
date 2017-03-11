@@ -87,6 +87,9 @@ app.post('/do_editgame', function (req, res) {
 
     var collection = db.get('games');
 
+    var msec = Date.parse(played);
+    var d = new Date(msec);
+
     // Update the record in the DB
     collection.update({"_id": ObjectId(req.body.gameID)},
     {
@@ -96,7 +99,7 @@ app.post('/do_editgame', function (req, res) {
         "team1" : team1,
         "team2" : team2,
         "winner": winner,
-        "played": played,
+        "played": d,
     },  function (err, doc) {
         if (err) {
             // If it failed, return error
@@ -172,6 +175,8 @@ app.post('/addgame', function(req, res) {
     // Set our collection
     var collection = db.get('games');
 
+    var msec = Date.parse(played);
+    var d = new Date(msec);
     // Submit to the DB
     collection.insert({
         "game_no": game_no,
@@ -180,7 +185,7 @@ app.post('/addgame', function(req, res) {
         "team1" : team1,
         "team2" : team2,
         "winner": winner,
-        "played": played,
+        "played": new Date(d),
         "season": "1"
     }, function (err, doc) {
         if (err) {
@@ -198,7 +203,8 @@ app.post('/addgame', function(req, res) {
 app.get('/', function (req, res) {
   var db = req.db;
   var collection = db.get('games');
-  collection.find({}, {"sort" : [['played', 'desc']]}, function(e,docs) {
+  collection.find({}, {"sort": { "matchID": -1 } }, function(e,docs) {
+    console.log(docs);
     var teamStats = {
       "won" : { "Team A": 0,
                 "Team B": 0,
@@ -229,7 +235,7 @@ app.get('/', function (req, res) {
         }
     } while (swapped);
     console.log("Team Stats: " + JSON.stringify(teamStats) + "Positions: " + teamPositions);
-    res.render('index', { games : JSON.stringify(docs), teamStats: teamStats, teamPositions: teamPositions, onloadfunction: 'printGamesFromJSON()'} );
+    res.render('index', { games : docs, teamStats: teamStats, teamPositions: teamPositions, onloadfunction: 'printGamesFromJSON()'} );
   });
 })
 

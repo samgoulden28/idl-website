@@ -37,60 +37,28 @@ block content
               th #{teamStats.played[team_pos] - teamStats.won[team_pos]}
               //- // Points
               th #{teamStats.won[team_pos]}
-  script.
-    function printGamesFromJSON() {
-      var json = !{games};
-      var gamesArray = Object.keys(json);
-      console.log(gamesArray);
-      for (var i = gamesArray.length - 1; i >= 0; i--) { 
-        console.log("GAME: " + i)
-        printGameCard(json[i]);
-      }
-    }
-    function printGameCard(game) {
-    var card = document.createElement("div");
-    card.setAttribute("class", "w3-card-4 w3-margin w3-white");
-    var cardHeading = document.createElement("div");
-    cardHeading.setAttribute("class", "w3-container w3-padding-8");
-    var h3 = document.createElement("h3");
-    var h5 = document.createElement("h5");
-    var playedText = document.createTextNode("Played: " + game.played);
-    var b = document.createElement("b");
-    var t = document.createTextNode(game.team1 + " vs " + game.team2);
-    b.appendChild(t)
-    h3.appendChild(b);
-    h5.appendChild(playedText);
-    cardHeading.appendChild(h3);
-    cardHeading.appendChild(h5);
-    var cardBody = document.createElement("div");
-    cardBody.setAttribute("class", "w3-container");
-    var cardBodyText1 = document.createTextNode("Winner: " + game.winner);
-    var cardBodyText2 = document.createTextNode("Match ID: " + game.matchID);
-    var cardBodyP = document.createElement("p");
-    cardBodyP.appendChild(cardBodyText1);
-    cardBodyP.appendChild( document.createElement("div"));
-    cardBodyP.appendChild(cardBodyText2);
-    cardBody.appendChild(cardBodyP);
-    var cardTitleText = document.createTextNode("Game " + game.game_no + " of " + game.game_total);
-    var cardTitle = document.createElement("div");
-    cardTitle.setAttribute("class", "w3-container");
-    cardTitle.appendChild(cardTitleText);
-    card.appendChild(cardTitle);
-    card.appendChild(cardHeading);
-    card.appendChild(cardBody);
-    document.getElementById('blog-entries').appendChild(card);
-    console.log(card);
-    }
-  // Grid
   .w3-row
-    // Blog entries
+    // Recent Games!
+    .w3-col.l8.s12.w3-center
+      h2 RECENT GAMES
     #blog-entries.w3-col.l8.s12
-      //- - var count = 0;
-      //- - for game in games
-      //-   div.w3-container
-      //-     | #{game.played}
-      //-   - count++;
-      //-   - if(count >= 5) break;
+      - var count = 0;
+      - for game in games
+        .w3-card-4.w3-margin.w3-white
+          .w3-container
+            p Game #{game.game_no} of #{game.game_total}
+          .w3-container
+            h3
+              b #{game.team1} vs #{game.team2}
+            h5
+              p Played #{prettyDate(game.played)}
+          .w3-container
+            p Winner: #{game.winner}
+            p Match ID: #{game.matchID}
+        - count++;
+        - if(count >= 5) 
+          button.w3-btn-block.w3-section.w3-blue.w3-ripple.w3-padding See All Games
+          - break;
         
     // Introduction menu
     .w3-col.l4

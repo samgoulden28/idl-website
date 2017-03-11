@@ -1,3 +1,12 @@
+-function prettyDate(dateString){
+    //if it's already a date object and not a string you don't need this line:
+    -var date = new Date(dateString);
+    -var d = date.getDate();
+    -var m = date.getMonth() + 1;
+    -var y = date.getFullYear();
+    -return d+'/'+m+'/'+y;
+-}
+
 doctype html
 html
   title IDL - IBM Dota League
