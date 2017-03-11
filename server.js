@@ -1,3 +1,4 @@
+var config = require('./config');
 var express = require('express');
 var app = express();
 
@@ -8,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var mongo = require('mongodb');
 var ObjectId = require("mongodb").ObjectID;
 var monk = require('monk');
-var db = monk('localhost:27017/test1');
+var db = monk(config.mongodb.host + ':' + config.mongodb.port + '/' + config.mongodb.db_name);
 
 app.use(express.static('public'));
 // Make our db accessible to our router
@@ -19,6 +20,10 @@ app.use(function(req,res,next){
 
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
+
+function passwordCorrect(given_password) {
+  return given_password === config.access.password;
+}
 
 app.get('/game_entry', function (req, res) {
   res.render('game_entry');
@@ -35,23 +40,30 @@ app.get('/game_delete', function (req, res) {
 app.post('/deletegame', function (req, res) {
   var db = req.db;
 
-  // Get our game ID to delete values.
-  var gameID = req.body.gameID;
+  //Check the user has provided the correct password
+  var password = req.body.password;
 
-  var collection = db.get('games');
+  if (!passwordCorrect(password)) {
+    res.send("Incorrect password supplied.");
+  } else {
+    // Get our game ID to delete values.
+    var gameID = req.body.gameID;
 
-  // Submit to the DB
-  collection.remove({"_id": ObjectId(req.body.gameID)} , function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem deleting the game from the database.");
-      }
-      else {
-          console.log("Game " + gameID + " deleted");
-          // And forward to success page
-          res.redirect("/");
-      }
-  });
+    var collection = db.get('games');
+
+    // Submit to the DB
+    collection.remove({"_id": ObjectId(req.body.gameID)} , function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem deleting the game from the database.");
+        }
+        else {
+            console.log("Game " + gameID + " deleted");
+            // And forward to success page
+            res.redirect("/");
+        }
+    });
+  }
 })
 
 /* POST to Add User Service */
@@ -59,38 +71,46 @@ app.post('/addgame', function(req, res) {
   // Set our internal DB variable
   var db = req.db;
 
-  // Get our form values. These rely on the "name" attributes
-  var matchID = req.body.matchID;
-  var played = req.body.played;
-  var team1 = req.body.team1;
-  var team2 = req.body.team2;
-  var winner = req.body.winner;
-  var game_no = req.body.game_no;
-  var game_total = req.body.game_total;
+  //Check the user has provided the correct password
+  var password = req.body.password;
 
-  // Set our collection
-  var collection = db.get('games');
+  if (!passwordCorrect(password)) {
+    res.send("Incorrect password supplied.");
+  } else {
 
-  // Submit to the DB
-  collection.insert({
-      "game_no": game_no,
-      "game_total": game_total,
-      "matchID": matchID,
-      "team1" : team1,
-      "team2" : team2,
-      "winner": winner,
-      "played": played,
-      "season": "1"
-  }, function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem adding the information to the database.");
-      }
-      else {
-          // And forward to success page
-          res.redirect("/");
-      }
-  });
+    // Get our form values. These rely on the "name" attributes
+    var matchID = req.body.matchID;
+    var played = req.body.played;
+    var team1 = req.body.team1;
+    var team2 = req.body.team2;
+    var winner = req.body.winner;
+    var game_no = req.body.game_no;
+    var game_total = req.body.game_total;
+
+    // Set our collection
+    var collection = db.get('games');
+
+    // Submit to the DB
+    collection.insert({
+        "game_no": game_no,
+        "game_total": game_total,
+        "matchID": matchID,
+        "team1" : team1,
+        "team2" : team2,
+        "winner": winner,
+        "played": played,
+        "season": "1"
+    }, function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            // And forward to success page
+            res.redirect("/");
+        }
+    });
+  }
 });
 
 app.get('/', function (req, res) {
@@ -131,7 +151,7 @@ app.get('/', function (req, res) {
   });
 })
 
-var server = app.listen(8081, function () {
+var server = app.listen(config.web.port, function () {
    var host = server.address().address
    var port = server.address().port
 
