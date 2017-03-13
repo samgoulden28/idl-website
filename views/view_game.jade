@@ -1,0 +1,16 @@
+extends ./layout
+
+block header 
+  .w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Match #{game.matchID}
+
+block content
+  // Current Standings
+  .w3-card-4.w3-center.w3-white
+    .w3-container.w3-center.w3-padding-8
+      h3
+        b #{game.team1} vs #{game.team2}
+      iframe(width="560", height="315", src="https://www.youtube.com/embed/z6QwqHEoTZo", frameborder="0", allowfullscreen)
+      h4

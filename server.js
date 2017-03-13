@@ -28,6 +28,24 @@ function passwordCorrect(given_password) {
   return given_password === config.access.password;
 }
 
+app.get('/view_game', function (req, res) {
+  console.log(req.query.id);
+  var id = req.query.id;
+  var collection = db.get('games');
+  // Submit to the DB
+  collection.findOne({"matchID": id}, {},  function (err, doc) {
+      if (err) {
+          // If it failed, return error
+          res.send("There was a problem getting the game from the database.");
+      }
+      else {
+          console.log("Found match: " + id);
+          // Render the edit page
+          res.render('view_game', { game: doc });
+      }
+  });
+})
+
 app.get('/game_entry', function (req, res) {
   res.render('game_entry');
 })
@@ -57,7 +75,7 @@ app.post('/editgame', function (req, res) {
           res.send("There was a problem getting the game from the database.");
       }
       else {
-          console.log("Game " + gameID + " deleted");
+          console.log("Game " + req.body.gameID + " deleted");
           // Render the edit page
           res.render("game_edit2", { game: doc, teams: teams });
       }

@@ -49,7 +49,8 @@ block content
             p Game #{game.game_no} of #{game.game_total}
           .w3-container
             h3
-              b #{game.team1} vs #{game.team2}
+              b
+                a(href="/view_game?id=#{game.matchID}") #{game.team1} vs #{game.team2}
             h5
               p Played #{prettyDate(game.played)}
           .w3-container
