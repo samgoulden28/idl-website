@@ -32,11 +32,39 @@ app.get('/game_entry', function (req, res) {
   res.render('game_entry');
 })
 
+app.get('/team_entry', function (req, res) {
+  res.render('team_entry');
+})
+
 app.get('/game_edit', function (req, res) {
   var db = req.db;
   var collection = db.get('games');
   collection.find({},{},function(e,docs) {
     res.render('game_edit', { games: docs } );
+  });
+})
+
+app.post('/addteam', function (req, res) {
+  var db = req.db;
+
+  //Check the user has provided the correct password
+  var password = req.body.password;
+  // Get our game ID to delete values.
+  var gameID = req.body.gameID;
+
+  var collection = db.get('games');
+
+  // Submit to the DB
+  collection.findOne({"_id": ObjectId(req.body.gameID)}, {},  function (err, doc) {
+      if (err) {
+          // If it failed, return error
+          res.send("There was a problem getting the game from the database.");
+      }
+      else {
+          console.log("Game " + gameID + " deleted");
+          // Render the edit page
+          res.render("game_edit2", { game: doc, teams: teams });
+      }
   });
 })
 
@@ -199,6 +227,10 @@ app.post('/addgame', function(req, res) {
     });
   }
 });
+
+app.get('/teams', function (req, res) {
+  res.render('teams');
+})
 
 app.get('/', function (req, res) {
   var db = req.db;

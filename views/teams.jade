@@ -1,0 +1,237 @@
+extends ./layout
+
+block header 
+  .w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Teams
+
+block content
+  .w3-main(style='')
+    // Header
+    header#portfolio.w3-container
+      h1
+        b#season_no SEASON 1
+      .w3-section.w3-bottombar.w3-padding-16
+        span.w3-margin-right Season:
+        button.w3-button.w3-black 1
+        button.w3-button.w3-white
+          i.fa.fa-diamond.w3-margin-right
+          | 2
+        button.w3-button.w3-white.w3-hide-small
+          i.fa.fa-photo.w3-margin-right
+          | 3
+        button.w3-button.w3-white.w3-hide-small
+          i.fa.fa-map-pin.w3-margin-right
+          | Art
+    // First Photo Grid
+    .w3-row-padding
+      .w3-third.w3-container.w3-margin-bottom.w3-hover-opacity(a href="team")
+        div(style="height:200px; overflow: hidden")
+          img(src='/dota_logo.png', alt='dota_logo', style="width:100%")
+        .w3-container.w3-white
+          p
+            h4
+              b Team A
+          p
+            h5
+              b Players
+              
+      .w3-third.w3-container.w3-margin-bottom
+        img.w3-hover-opacity(src='/w3images/lights.jpg', alt='Norway', style='width:100%')
+        .w3-container.w3-white
+          p
+            b Lorem Ipsum
+          p
+            | Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+      .w3-third.w3-container
+        img.w3-hover-opacity(src='/w3images/nature.jpg', alt='Norway', style='width:100%')
+        .w3-container.w3-white
+          p
+            b Lorem Ipsum
+          p
+            | Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+    // Second Photo Grid
+    .w3-row-padding
+      .w3-third.w3-container.w3-margin-bottom
+        img.w3-hover-opacity(src='/w3images/p1.jpg', alt='Norway', style='width:100%')
+        .w3-container.w3-white
+          p
+            b Lorem Ipsum
+          p
+            | Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+      .w3-third.w3-container.w3-margin-bottom
+        img.w3-hover-opacity(src='/w3images/p2.jpg', alt='Norway', style='width:100%')
+        .w3-container.w3-white
+          p
+            b Lorem Ipsum
+          p
+            | Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+      .w3-third.w3-container
+        img.w3-hover-opacity(src='/w3images/p3.jpg', alt='Norway', style='width:100%')
+        .w3-container.w3-white
+          p
+            b Lorem Ipsum
+          p
+            | Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+    // Pagination
+    .w3-center.w3-padding-32
+      .w3-bar
+        a.w3-bar-item.w3-button.w3-hover-black(href='#') «
+        a.w3-bar-item.w3-black.w3-button(href='#') 1
+        a.w3-bar-item.w3-button.w3-hover-black(href='#') 2
+        a.w3-bar-item.w3-button.w3-hover-black(href='#') 3
+        a.w3-bar-item.w3-button.w3-hover-black(href='#') 4
+        a.w3-bar-item.w3-button.w3-hover-black(href='#') »
+    // Images of Me
+    #about.w3-row-padding.w3-padding-16
+      .w3-col.m6
+        img(src='/w3images/avatar_g.jpg', alt='Me', style='width:100%')
+      .w3-col.m6
+        img(src='/w3images/me2.jpg', alt='Me', style='width:100%')
+    .w3-container.w3-padding-large(style='margin-bottom:32px')
+      h4
+        b About Me
+      p
+        | Just me, myself and I, exploring the universe of unknownment. I have a heart of love and an interest of lorem ipsum and mauris neque quam blog. I want to share my world with you. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+      hr
+      h4 Technical Skills
+      // Progress bars / Skills
+      p Photography
+      .w3-grey
+        .w3-container.w3-dark-grey.w3-padding.w3-center(style='width:95%') 95%
+      p Web Design
+      .w3-grey
+        .w3-container.w3-dark-grey.w3-padding.w3-center(style='width:85%') 85%
+      p Photoshop
+      .w3-grey
+        .w3-container.w3-dark-grey.w3-padding.w3-center(style='width:80%') 80%
+      p
+        button.w3-button.w3-dark-grey.w3-padding-large.w3-margin-top.w3-margin-bottom
+          i.fa.fa-download.w3-margin-right
+          | Download Resume
+      hr
+      h4 How much I charge
+      // Pricing Tables
+      .w3-row-padding(style='margin:0 -16px')
+        .w3-third.w3-margin-bottom
+          ul.w3-ul.w3-border.w3-white.w3-center.w3-opacity.w3-hover-opacity-off
+            li.w3-black.w3-xlarge.w3-padding-32 Basic
+            li.w3-padding-16 Web Design
+            li.w3-padding-16 Photography
+            li.w3-padding-16 1GB Storage
+            li.w3-padding-16 Mail Support
+            li.w3-padding-16
+              h2 $ 10
+              span.w3-opacity per month
+            li.w3-light-grey.w3-padding-24
+              button.w3-button.w3-teal.w3-padding-large.w3-hover-black Sign Up
+        .w3-third.w3-margin-bottom
+          ul.w3-ul.w3-border.w3-white.w3-center.w3-opacity.w3-hover-opacity-off
+            li.w3-teal.w3-xlarge.w3-padding-32 Pro
+            li.w3-padding-16 Web Design
+            li.w3-padding-16 Photography
+            li.w3-padding-16 50GB Storage
+            li.w3-padding-16 Endless Support
+            li.w3-padding-16
+              h2 $ 25
+              span.w3-opacity per month
+            li.w3-light-grey.w3-padding-24
+              button.w3-button.w3-teal.w3-padding-large.w3-hover-black Sign Up
+        .w3-third
+          ul.w3-ul.w3-border.w3-white.w3-center.w3-opacity.w3-hover-opacity-off
+            li.w3-black.w3-xlarge.w3-padding-32 Premium
+            li.w3-padding-16 Web Design
+            li.w3-padding-16 Photography
+            li.w3-padding-16 Unlimited Storage
+            li.w3-padding-16 Endless Support
+            li.w3-padding-16
+              h2 $ 25
+              span.w3-opacity per month
+            li.w3-light-grey.w3-padding-24
+              button.w3-button.w3-teal.w3-padding-large.w3-hover-black Sign Up
+    // Contact Section
+    .w3-container.w3-padding-large.w3-grey
+      h4#contact
+        b Contact Me
+      .w3-row-padding.w3-center.w3-padding-24(style='margin:0 -16px')
+        .w3-third.w3-dark-grey
+          p
+            i.fa.fa-envelope.w3-xxlarge.w3-text-light-grey
+          p email@email.com
+        .w3-third.w3-teal
+          p
+            i.fa.fa-map-marker.w3-xxlarge.w3-text-light-grey
+          p Chicago, US
+        .w3-third.w3-dark-grey
+          p
+            i.fa.fa-phone.w3-xxlarge.w3-text-light-grey
+          p 512312311
+      hr.w3-opacity
+      form(action='/action_page.php', target='_blank')
+        .w3-group
+          label Name
+          input.w3-input.w3-border(type='text', name='Name', required='')
+        .w3-group
+          label Email
+          input.w3-input.w3-border(type='text', name='Email', required='')
+        .w3-group
+          label Message
+          input.w3-input.w3-border(type='text', name='Message', required='')
+        button.w3-button.w3-black.w3-padding-large.w3-margin-bottom(type='submit')
+          i.fa.fa-paper-plane.w3-margin-right
+          | Send Message
+    // Footer
+    footer.w3-container.w3-padding-32.w3-dark-grey
+      .w3-row-padding
+        .w3-third
+          h3 FOOTER
+          p
+            | Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+          p
+            | Powered by 
+            a(href='https://www.w3schools.com/w3css/default.asp', target='_blank') w3.css
+        .w3-third
+          h3 BLOG POSTS
+          ul.w3-ul.w3-hoverable
+            li.w3-padding-16
+              img.w3-left.w3-margin-right(src='/w3images/workshop.jpg', style='width:50px')
+              span.w3-large Lorem
+              br
+              span Sed mattis nunc
+            li.w3-padding-16
+              img.w3-left.w3-margin-right(src='/w3images/gondol.jpg', style='width:50px')
+              span.w3-large Ipsum
+              br
+              span Praes tinci sed
+        .w3-third
+          h3 POPULAR TAGS
+          p
+            span.w3-tag.w3-black.w3-margin-bottom Travel
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom New York
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom London
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom IKEA
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom NORWAY
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom DIY
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom Ideas
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom Baby
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom Family
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom News
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom Clothing
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom Shopping
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom Sports
+            span.w3-tag.w3-grey.w3-small.w3-margin-bottom Games
+    .w3-black.w3-center.w3-padding-24
+      | Powered by 
+      a.w3-hover-opacity(href='https://www.w3schools.com/w3css/default.asp', title='W3.CSS', target='_blank') w3.css
+    // End page content
+  script.
+    // Script to open and close sidenav
+    function w3_open() {
+    document.getElementById("mySidenav").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+    }
+    function w3_close() {
+    document.getElementById("mySidenav").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+    }
