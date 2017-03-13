@@ -130,6 +130,7 @@ app.post('/do_editgame', function (req, res) {
     var winner = req.body.winner;
     var game_no = req.body.game_no;
     var game_total = req.body.game_total;
+    var youtube_embed = req.body.youtube_embed;
 
     var collection = db.get('games');
 
@@ -146,6 +147,7 @@ app.post('/do_editgame', function (req, res) {
         "team2" : team2,
         "winner": winner,
         "played": d,
+        "youtube_embed": youtube_embed
     },  function (err, doc) {
         if (err) {
             // If it failed, return error

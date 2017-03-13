@@ -60,6 +60,11 @@ block content
             input(type='file', name='replay')
           p
       .w3-row.w3-section
+        .w3-col
+          i.w3-xxlarge.fa.fa-user
+        .w3-rest
+          input.w3-input.w3-border(name='youtube_embed', type='text', value='#{ game.youtube_embed == undefined ? "" : game.youtube_embed }', placeholder="Youtube link")
+      .w3-row.w3-section
         .w3-col(style='width:50px')
           i.w3-xxlarge.fa.fa-user
         .w3-rest
