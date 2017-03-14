@@ -24,10 +24,10 @@ block content
         //- button.w3-button.w3-white.w3-hide-small
         //-   i.fa.fa-map-pin.w3-margin-right
         //-   | Art
-    // First Photo Grid
-    .w3-row-padding
       - var count = 0;
       - for team in teams
+        - if (count % 3 == 0)
+          .w3-row-padding
         .w3-third.w3-container.w3-margin-bottom.w3-hover-opacity(a href="team")
           div(style="height:200px; overflow: hidden")
             img(src='/dota_logo.png', alt='dota_logo', style="width:100%")
@@ -49,9 +49,6 @@ block content
                   li
                     a(href="#{team.players.player5.steam_profile}") #{team.players.player5.name}
         - count++;
-        - if(count >= 3) 
-          .w3-third.w3-container.w3-margin-bottom
-          - break;
   //-   // Pagination
   .w3-center.w3-padding-32
     .w3-bar
