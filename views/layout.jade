@@ -23,17 +23,21 @@ html
         a.w3-bar-item.w3-button.w3-padding-large.w3-hide-medium.w3-hide-large.w3-opennav.w3-right(href='javascript:void(0)', onclick='myFunction()', title='Toggle Navigation Menu')
           i.fa.fa-bars
         a.w3-bar-item.w3-button.w3-padding-large(href='/') HOME
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='/game_entry') ADD A GAME
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='/game_delete') DELETE A GAME
-        a.w3-bar-item.w3-button.w3-padding-large.w3-hide-small(href='/game_edit') EDIT A GAME
         .w3-hide-small.w3-dropdown-hover
-          a.w3-padding-large.w3-button(href='javascript:void(0)', title='More')
-            | MORE
+          a.w3-padding-large.w3-button(href='javascript:void(0)', title='GAMES')
+            | GAMES
             i.fa.fa-caret-down
           .w3-dropdown-content.w3-white.w3-card-4
-            a(href='#') Merchandise
-            a(href='#') Extras
-            a(href='#') Media
+            a(href='/game_entry') Add a game
+            a(href='/game_delete') Delete a game
+            a(href='/game_edit') Edit a game
+        .w3-hide-small.w3-dropdown-hover
+          a.w3-padding-large.w3-button(href='javascript:void(0)', title='TEAMS')
+            | TEAMS
+            i.fa.fa-caret-down
+          .w3-dropdown-content.w3-white.w3-card-4
+            a(href='/teams') View teams
+            a(href='/team_entry') Add a team
         a.w3-padding-large.w3-hover-red.w3-hide-small.w3-right(href='javascript:void(0)')
           i.fa.fa-search
     //

@@ -67,23 +67,48 @@ app.post('/addteam', function (req, res) {
 
   //Check the user has provided the correct password
   var password = req.body.password;
-  // Get our game ID to delete values.
-  var gameID = req.body.gameID;
 
-  var collection = db.get('games');
+  if (!passwordCorrect(password)) {
+    res.send("Incorrect password supplied.");
+  } else {
+    // Get our game ID to delete values.
+    var team_name = req.body.team_name;
+    var player1 = req.body.player1;
+    var player1_profile = req.body.player1_profile;
+    var player2 = req.body.player2;
+    var player2_profile = req.body.player2_profile;
+    var player3 = req.body.player3;
+    var player3_profile = req.body.player3_profile;
+    var player4 = req.body.player4;
+    var player4_profile = req.body.player4_profile;
+    var player5 = req.body.player5;
+    var player5_profile = req.body.player5_profile;
+    var season = req.body.season;
 
-  // Submit to the DB
-  collection.findOne({"_id": ObjectId(req.body.gameID)}, {},  function (err, doc) {
-      if (err) {
-          // If it failed, return error
-          res.send("There was a problem getting the game from the database.");
-      }
-      else {
-          console.log("Game " + gameID + " deleted");
-          // Render the edit page
-          res.render("game_edit2", { game: doc, teams: teams });
-      }
-  });
+    var collection = db.get('teams');
+
+    // Update the record in the DB
+    collection.insert({
+        "team_name": team_name,
+        "players" : { "player1": { "name" : player1, "steam_profile" : player1_profile },
+                      "player2": { "name" : player2, "steam_profile" : player2_profile },
+                      "player3": { "name" : player3, "steam_profile" : player3_profile },
+                      "player4": { "name" : player4, "steam_profile" : player4_profile },
+                      "player5": { "name" : player5, "steam_profile" : player5_profile }
+                    },
+        "season" : season
+    },  function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem adding the team to the database.");
+        }
+        else {
+            console.log("Team " + team_name + " added");
+            // Render the edit page
+            res.redirect("/");
+        }
+    });
+  }
 })
 
 app.post('/editgame', function (req, res) {
@@ -249,7 +274,12 @@ app.post('/addgame', function(req, res) {
 });
 
 app.get('/teams', function (req, res) {
-  res.render('teams');
+  var db = req.db;
+  var collection = db.get('teams');
+  collection.find({}, {}, function(e,docs) {
+    console.log(docs);
+    res.render('teams', { "teams": docs });
+  });
 })
 
 app.get('/', function (req, res) {
