@@ -22,7 +22,7 @@ block content
           th Won
           th Lost
           th Points
-        - for (var i = 0; i < 4; i++) 
+        - for (var i = 0; i < teams.length; i++) 
           - var team_pos = teamPositions[i];
             tr
               // Position
@@ -43,7 +43,7 @@ block content
       h2 RECENT GAMES
     #blog-entries.w3-col.l8.s12
       - var count = 0;
-      - for game in games
+      - for game in games 
         .w3-card-4.w3-margin.w3-white
           .w3-container
             p Game #{game.game_no} of #{game.game_total}
@@ -60,7 +60,15 @@ block content
         - if(count >= 5) 
           button.w3-btn-block.w3-section.w3-blue.w3-ripple.w3-padding See All Games
           - break;
-        
+      - if(count == 0) 
+        .w3-card-4.w3-margin.w3-white
+          .w3-container
+            p No games!
+          .w3-container
+            h3
+              b
+                p No Games played in season #{season} yet!
+            
     // Introduction menu
     .w3-col.l4
       // About Card
@@ -68,12 +76,12 @@ block content
         .w3-container Season info
         .w3-container.w3-white
           h4
-            b Current Season: 1
+            b Current Season: #{season.season_number}
           p
             | Running from
-            b 02/03/2017
+            b #{season.startDate}
             |  to 
-            b 09/04/2017
+            b #{season.endDate}
       hr
       // Teams
       .w3-card-2.w3-margin

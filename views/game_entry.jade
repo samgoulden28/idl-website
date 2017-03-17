@@ -37,23 +37,23 @@ block content
       .w3-row.w3-section
         select.w3-select.w3-border.w3-half(name='team1')
           option(value='', disabled='', selected='') Team 1
-          option(value='Team A') Team A
-          option(value='Team B') Team B
-          option(value='Team C') Team C
-          option(value='Team D') Team D
+            each team in teams
+              option(value=team.team_name)= team.team_name
         select.w3-select.w3-border.w3-half(name='team2')
           option(value='', disabled='', selected='') Team 2
-          option(value='Team A') Team A
-          option(value='Team B') Team B
-          option(value='Team C') Team C
-          option(value='Team D') Team D
+            each team in teams
+              option(value=team.team_name)= team.team_name
       .w3-row.w3-section
         select.w3-select.w3-border(name='winner')
           option(value='', disabled='', selected='') Winner
-          option(value='Team A') Team A
-          option(value='Team B') Team B
-          option(value='Team C') Team C
-          option(value='Team D') Team D
+            each team in teams
+              option(value=team.team_name)= team.team_name
+      .w3-row.w3-section
+        select.w3-select.w3-border(name='season')
+          option(value='', disabled='') Season
+            - for (var i = 1; i <= season.season_number; i++)
+              - var select=null; if (i == season.season_number) select='selected';
+              option(value=i, selected=select) Season #{i}
       .w3-row.w3-section
         .w3-col(style='width:50px')
           i.w3-xxlarge.fa.fa-pencil

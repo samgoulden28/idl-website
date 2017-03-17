@@ -22,7 +22,53 @@ app.use(function(req,res,next){
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
 
-var teams = [ "Team A", "Team B", "Team C", "Team D" ];
+var teams_collection = db.get('teams');
+var seasons_collection = db.get('seasons');
+var teams;
+update_teams();
+
+function update_teams() {
+  teams_collection.find({},{},function(e,docs) {
+    if (e) {
+      // If it failed, return error
+      console.log(e + ": There was a problem getting the teams from the database.");
+    }
+    else {
+      console.log("Found teams: " + docs);
+      teams = docs;
+    }
+  });
+}
+
+function get_season(season_number) {
+  var season;
+  seasons_collection.findOne({"season_number": season_number},{},function(e,doc) {
+    if (e) {
+      // If it failed, return error
+      console.log(e + ": There was a problem getting the seasons from the database.");
+    }
+    else {
+      console.log("Found season: " + JSON.stringify(doc));
+      season = doc;
+    }
+  });
+  return season;
+}
+
+get_season(config.season);
+
+// global_collection.find({"season": "1"}, {},  function (err, docs) {
+//     if (err) {
+//         // If it failed, return error
+//         console.log("There was a problem getting the teams from the database.");
+//     }
+//     else {
+//       console.log("Found teams: " + docs);
+//       teams = docs.toArray();
+//     }
+// });
+
+//teams = [ "Team A", "Team B", "Team C", "Team D" ];
 
 function passwordCorrect(given_password) {
   return given_password === config.access.password;
@@ -47,7 +93,7 @@ app.get('/view_game', function (req, res) {
 })
 
 app.get('/game_entry', function (req, res) {
-  res.render('game_entry');
+  res.render('game_entry', { teams: teams, season: season});
 })
 
 app.get('/team_entry', function (req, res) {
@@ -104,6 +150,7 @@ app.post('/addteam', function (req, res) {
         }
         else {
             console.log("Team " + team_name + " added");
+            update_teams();
             // Render the edit page
             res.redirect("/");
         }
@@ -244,6 +291,8 @@ app.post('/addgame', function(req, res) {
     var winner = req.body.winner;
     var game_no = req.body.game_no;
     var game_total = req.body.game_total;
+    var season = req.body.season;
+
 
     // Set our collection
     var collection = db.get('games');
@@ -259,7 +308,7 @@ app.post('/addgame', function(req, res) {
         "team2" : team2,
         "winner": winner,
         "played": new Date(d),
-        "season": "1"
+        "season": season
     }, function (err, doc) {
         if (err) {
             // If it failed, return error
@@ -283,28 +332,29 @@ app.get('/teams', function (req, res) {
 })
 
 app.get('/', function (req, res) {
+  //Get the list of games
   var db = req.db;
   var collection = db.get('games');
-  collection.find({}, {"sort": { "matchID": -1 } }, function(e,docs) {
-    console.log(docs);
-    var teamStats = {
-      "won" : { "Team A": 0,
-                "Team B": 0,
-                "Team C": 0,
-                "Team D": 0,
-              },
-      "played" : { "Team A": 0,
-                 "Team B": 0,
-                 "Team C": 0,
-                 "Team D": 0,
-               }
+  //Sort on match ID (they are in chronological order)
+  collection.find({"season" : config.season}, {"sort": { "matchID": -1 } }, function(e,docs) {
+    var teamStats = {};
+    teamStats['won'] = {};
+    teamStats['played'] = {};
+    var teamPositions = [];
+    //Populate teams stats objects
+    for (var team in teams) {
+      console.log ("TEAM: " + team)
+      teamStats['won'][teams[team].team_name] = 0;
+      teamStats['played'][teams[team].team_name] = 0;
+      teamPositions.push(teams[team].team_name);
     }
+    //Add scores to teams depending on database of games.
     for (var game in docs) {
-      teamStats.played[docs[game].team1] += 1;
-      teamStats.played[docs[game].team2] += 1;
-      teamStats.won[docs[game].winner] += 1;
+      teamStats['played'][docs[game].team1] += 1;
+      teamStats['played'][docs[game].team2] += 1;
+      teamStats['won'][docs[game].winner] += 1;
     }
-    var teamPositions = [ "Team A", "Team B", "Team C", "Team D" ];
+    //Sort teams based on points won.
     do {
         swapped = false;
         for (var i=0; i < teamPositions.length-1; i++) {
@@ -316,8 +366,7 @@ app.get('/', function (req, res) {
             }
         }
     } while (swapped);
-    console.log("Team Stats: " + JSON.stringify(teamStats) + "Positions: " + teamPositions);
-    res.render('index', { games : docs, teamStats: teamStats, teamPositions: teamPositions, onloadfunction: 'printGamesFromJSON()'} );
+    res.render('index', { games : docs, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams } );
   });
 })
 
