@@ -24,49 +24,33 @@ app.set('view engine', 'jade')
 
 var teams_collection = db.get('teams');
 var seasons_collection = db.get('seasons');
-var teams;
-update_teams();
 
-function update_teams() {
-  teams_collection.find({},{},function(e,docs) {
+
+function get_teams(callback) {
+  teams_collection.find({ "season" : config.season },{},function(e,docs) {
     if (e) {
       // If it failed, return error
       console.log(e + ": There was a problem getting the teams from the database.");
     }
     else {
       console.log("Found teams: " + docs);
-      teams = docs;
+      callback(e, docs);
     }
   });
 }
 
-function get_season(season_number) {
-  var season;
-  seasons_collection.findOne({"season_number": season_number},{},function(e,doc) {
+function get_season(callback) {
+  seasons_collection.findOne({ "season_number" : config.season },{},function(e,doc) {
     if (e) {
       // If it failed, return error
       console.log(e + ": There was a problem getting the seasons from the database.");
     }
     else {
-      console.log("Found season: " + JSON.stringify(doc));
-      season = doc;
+      console.log("Looking for season " + config.season + ". Found season: " + JSON.stringify(doc));
+      callback(e, doc);
     }
   });
-  return season;
 }
-
-get_season(config.season);
-
-// global_collection.find({"season": "1"}, {},  function (err, docs) {
-//     if (err) {
-//         // If it failed, return error
-//         console.log("There was a problem getting the teams from the database.");
-//     }
-//     else {
-//       console.log("Found teams: " + docs);
-//       teams = docs.toArray();
-//     }
-// });
 
 //teams = [ "Team A", "Team B", "Team C", "Team D" ];
 
@@ -93,7 +77,11 @@ app.get('/view_game', function (req, res) {
 })
 
 app.get('/game_entry', function (req, res) {
-  res.render('game_entry', { teams: teams, season: season});
+  get_season(function(err, season) {
+    get_teams(function(err, teams) {
+      res.render('game_entry', { teams: teams, season: season });
+    });
+  });
 })
 
 app.get('/team_entry', function (req, res) {
@@ -150,7 +138,6 @@ app.post('/addteam', function (req, res) {
         }
         else {
             console.log("Team " + team_name + " added");
-            update_teams();
             // Render the edit page
             res.redirect("/");
         }
@@ -177,6 +164,7 @@ app.post('/editgame', function (req, res) {
       else {
           console.log("Game " + req.body.gameID + " deleted");
           // Render the edit page
+          var teams = get_teams();
           res.render("game_edit2", { game: doc, teams: teams });
       }
   });
@@ -237,7 +225,7 @@ app.post('/do_editgame', function (req, res) {
 app.get('/game_delete', function (req, res) {
   var db = req.db;
   var collection = db.get('games');
-  collection.find({},{},function(e,docs) {
+  collection.find({"season" : config.season},{},function(e,docs) {
     res.render('game_delete', { games: docs } );
   });
 })
@@ -331,42 +319,55 @@ app.get('/teams', function (req, res) {
   });
 })
 
+app.get('/error', function (req, res) {
+  res.send("Something went wrong. Go back to the home page here: <a href=\"/\"> Go home </a>");
+})
+
 app.get('/', function (req, res) {
   //Get the list of games
   var db = req.db;
   var collection = db.get('games');
   //Sort on match ID (they are in chronological order)
   collection.find({"season" : config.season}, {"sort": { "matchID": -1 } }, function(e,docs) {
-    var teamStats = {};
-    teamStats['won'] = {};
-    teamStats['played'] = {};
-    var teamPositions = [];
-    //Populate teams stats objects
-    for (var team in teams) {
-      console.log ("TEAM: " + team)
-      teamStats['won'][teams[team].team_name] = 0;
-      teamStats['played'][teams[team].team_name] = 0;
-      teamPositions.push(teams[team].team_name);
-    }
-    //Add scores to teams depending on database of games.
-    for (var game in docs) {
-      teamStats['played'][docs[game].team1] += 1;
-      teamStats['played'][docs[game].team2] += 1;
-      teamStats['won'][docs[game].winner] += 1;
-    }
-    //Sort teams based on points won.
-    do {
-        swapped = false;
-        for (var i=0; i < teamPositions.length-1; i++) {
-            if (teamStats.won[teamPositions[i]] < teamStats.won[teamPositions[i+1]]) {
-                var temp = teamPositions[i];
-                teamPositions[i] = teamPositions[i+1];
-                teamPositions[i+1] = temp;
-                swapped = true;
-            }
+    get_season(function(err, season) {
+      if(!season) {
+        console.log("Found no season info for season " + config.season)
+      }
+      get_teams(function(err, teams) {
+        if(!teams) {
+          console.log("Found no teams for season " + config.season)
         }
-    } while (swapped);
-    res.render('index', { games : docs, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams } );
+        var teamStats = {};
+        teamStats['won'] = {};
+        teamStats['played'] = {};
+        var teamPositions = [];
+        //Populate teams stats objects
+        for (var team in teams) {
+          teamStats['won'][teams[team].team_name] = 0;
+          teamStats['played'][teams[team].team_name] = 0;
+          teamPositions.push(teams[team].team_name);
+        }
+        //Add scores to teams depending on database of games.
+        for (var game in docs) {
+          teamStats['played'][docs[game].team1] += 1;
+          teamStats['played'][docs[game].team2] += 1;
+          teamStats['won'][docs[game].winner] += 1;
+        }
+        //Sort teams based on points won.
+        do {
+            swapped = false;
+            for (var i=0; i < teamPositions.length-1; i++) {
+                if (teamStats.won[teamPositions[i]] < teamStats.won[teamPositions[i+1]]) {
+                    var temp = teamPositions[i];
+                    teamPositions[i] = teamPositions[i+1];
+                    teamPositions[i+1] = temp;
+                    swapped = true;
+                }
+            }
+        } while (swapped);
+        res.render('index', { games : docs, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams } );
+      });
+    });
   });
 })
 

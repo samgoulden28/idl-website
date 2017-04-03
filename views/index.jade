@@ -67,7 +67,7 @@ block content
           .w3-container
             h3
               b
-                p No Games played in season #{season} yet!
+                p No Games played in season #{season.season_number} yet!
             
     // Introduction menu
     .w3-col.l4
@@ -79,36 +79,21 @@ block content
             b Current Season: #{season.season_number}
           p
             | Running from
-            b #{season.startDate}
+            b #{prettyDate(season.startDate)}
             |  to 
-            b #{season.endDate}
+            b #{prettyDate(season.endDate)}
       hr
       // Teams
       .w3-card-2.w3-margin
         .w3-container.w3-padding
           h4 Teams
-        ul.w3-ul.w3-hoverable.w3-white
-          li.w3-padding-16
-            img.w3-left.w3-margin-right(src='/w3images/workshop.jpg', alt='Image', style='width:50px')
-            span.w3-large Team A
-            br
-            span View Games
-          li.w3-padding-16
-            img.w3-left.w3-margin-right(src='/w3images/gondol.jpg', alt='Image', style='width:50px')
-            span.w3-large Team B
-            br
-            span View Games
-          li.w3-padding-16
-            img.w3-left.w3-margin-right(src='/w3images/skies.jpg', alt='Image', style='width:50px')
-            span.w3-large Team C
-            br
-            span View Games
-          li.w3-padding-16.w3-hide-medium.w3-hide-small
-            img.w3-left.w3-margin-right(src='/w3images/rock.jpg', alt='Image', style='width:50px')
-            span.w3-large Team D
-            br
-            span View Games
-            hr
+        - for (var i = 0; i < teams.length; i++) 
+          ul.w3-ul.w3-hoverable.w3-white
+            li.w3-padding-16
+              img.w3-left.w3-margin-right(src='/w3images/workshop.jpg', alt='Image', style='width:50px')
+              span.w3-large #{teams[i].team_name}
+              br
+              span View Games
           // END Introduction Menu
         // END GRID
             br
