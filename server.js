@@ -315,7 +315,7 @@ app.get('/teams', function (req, res) {
   var collection = db.get('teams');
   collection.find({}, {}, function(e,docs) {
     console.log(docs);
-    res.render('teams', { "teams": docs });
+    res.render('teams', { "teams": JSON.stringify(docs), "season": config.season });
   });
 })
 

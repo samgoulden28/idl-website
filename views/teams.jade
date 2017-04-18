@@ -7,57 +7,53 @@ block header
     p Teams
 
 block content
+  script(src='teams.js')
   .w3-main(style='')
     // Header
     header#portfolio.w3-container
       h1
-        b#season_no SEASON 1
+        b#season_no SEASON #{season}
       .w3-section.w3-bottombar.w3-padding-16
         span.w3-margin-right Season:
-        button.w3-button.w3-black 1
-        //- button.w3-button.w3-white
-        //-   i.fa.fa-diamond.w3-margin-right
-        //-   | 2
+        - for(i = 1; i <= season; i++) 
+          - if(i == season)
+            button(id="season#{i}Button" onclick="displayTeamsForSeason(#{i}, '#{teams}', #{season})").w3-button.w3-black #{i}
+          - else
+            button(id="season#{i}Button" onclick="displayTeamsForSeason(#{i}, '#{teams}', #{season})").w3-button.w3-hover-black #{i}
         //- button.w3-button.w3-white.w3-hide-small
         //-   i.fa.fa-photo.w3-margin-right
         //-   | 3
         //- button.w3-button.w3-white.w3-hide-small
         //-   i.fa.fa-map-pin.w3-margin-right
         //-   | Art
-      - var count = 0;
-      - for team in teams
-        - if (count % 3 == 0)
-          .w3-row-padding
-        .w3-third.w3-container.w3-margin-bottom.w3-hover-opacity(a href="team")
-          div(style="height:200px; overflow: hidden")
-            img(src='/dota_logo.png', alt='dota_logo', style="width:100%")
-          .w3-container.w3-white
-            p
-              h4
-                b #{team.team_name}
-            p
-              h5
-                b Players
-                  li 
-                    a(href="#{team.players.player1.steam_profile}") #{team.players.player1.name}
-                  li 
-                    a(href="#{team.players.player2.steam_profile}") #{team.players.player2.name}
-                  li
-                    a(href="#{team.players.player3.steam_profile}") #{team.players.player3.name}
-                  li
-                    a(href="#{team.players.player4.steam_profile}") #{team.players.player4.name}
-                  li
-                    a(href="#{team.players.player5.steam_profile}") #{team.players.player5.name}
-        - count++;
-  //-   // Pagination
-  .w3-center.w3-padding-32
-    .w3-bar
-      a.w3-bar-item.w3-button.w3-hover-black(href='#') «
-      a.w3-bar-item.w3-black.w3-button(href='#') 1
-      a.w3-bar-item.w3-button.w3-hover-black(href='#') 2
-      a.w3-bar-item.w3-button.w3-hover-black(href='#') 3
-      a.w3-bar-item.w3-button.w3-hover-black(href='#') 4
-      a.w3-bar-item.w3-button.w3-hover-black(href='#') »
+      - for(i = 1; i <= season; i++) 
+        div(id="season#{i}Pane" style="display: #{i != season?'none':'block'}").w3-container
+          - var count = 0;
+          - var JSONTeams = JSON.parse(teams);
+          - for team in JSONTeams.filter((team) => team.season == i)
+            - if (count % 3 == 0)
+              .w3-row-padding
+            .w3-third.w3-container.w3-margin-bottom.w3-hover-opacity(a href="team")
+              div(style="height:200px; overflow: hidden")
+                img(src='/dota_logo.png', alt='dota_logo', style="width:100%")
+              .w3-container.w3-white
+                p
+                  h4
+                    b #{team.team_name}
+                p
+                  h5
+                    b Players
+                      li 
+                        a(href="#{team.players.player1.steam_profile}") #{team.players.player1.name}
+                      li 
+                        a(href="#{team.players.player2.steam_profile}") #{team.players.player2.name}
+                      li
+                        a(href="#{team.players.player3.steam_profile}") #{team.players.player3.name}
+                      li
+                        a(href="#{team.players.player4.steam_profile}") #{team.players.player4.name}
+                      li
+                        a(href="#{team.players.player5.steam_profile}") #{team.players.player5.name}
+            - count++;
   //-   // Images of Me
   //-   #about.w3-row-padding.w3-padding-16
   //-     .w3-col.m6
