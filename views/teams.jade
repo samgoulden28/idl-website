@@ -30,30 +30,31 @@ block content
         div(id="season#{i}Pane" style="display: #{i != season?'none':'block'}").w3-container
           - var count = 0;
           - var JSONTeams = JSON.parse(teams);
-          - for team in JSONTeams.filter((team) => team.season == i)
-            - if (count % 3 == 0)
-              .w3-row-padding
-            .w3-third.w3-container.w3-margin-bottom.w3-hover-opacity(a href="team")
-              div(style="height:200px; overflow: hidden")
-                img(src='/dota_logo.png', alt='dota_logo', style="width:100%")
-              .w3-container.w3-white
-                p
-                  h4
-                    b #{team.team_name}
-                p
-                  h5
-                    b Players
-                      li 
-                        a(href="#{team.players.player1.steam_profile}") #{team.players.player1.name}
-                      li 
-                        a(href="#{team.players.player2.steam_profile}") #{team.players.player2.name}
-                      li
-                        a(href="#{team.players.player3.steam_profile}") #{team.players.player3.name}
-                      li
-                        a(href="#{team.players.player4.steam_profile}") #{team.players.player4.name}
-                      li
-                        a(href="#{team.players.player5.steam_profile}") #{team.players.player5.name}
-            - count++;
+          - for team in JSONTeams
+            - if (team.season == i)
+              - if (count % 3 == 0)
+                .w3-row-padding
+              .w3-third.w3-container.w3-margin-bottom.w3-hover-opacity(a href="team")
+                div(style="height:200px; overflow: hidden")
+                  img(src='/dota_logo.png', alt='dota_logo', style="width:100%")
+                .w3-container.w3-white
+                  p
+                    h4
+                      b #{team.team_name}
+                  p
+                    h5
+                      b Players
+                        li 
+                          a(href="#{team.players.player1.steam_profile}") #{team.players.player1.name}
+                        li 
+                          a(href="#{team.players.player2.steam_profile}") #{team.players.player2.name}
+                        li
+                          a(href="#{team.players.player3.steam_profile}") #{team.players.player3.name}
+                        li
+                          a(href="#{team.players.player4.steam_profile}") #{team.players.player4.name}
+                        li
+                          a(href="#{team.players.player5.steam_profile}") #{team.players.player5.name}
+              - count++;
   //-   // Images of Me
   //-   #about.w3-row-padding.w3-padding-16
   //-     .w3-col.m6
