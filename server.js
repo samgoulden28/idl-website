@@ -301,7 +301,7 @@ app.post('/addfixture', function(req, res) {
     // Get our form values. These rely on the "name" attributes
     var season = req.body.season;
     var best_of = req.body.best_of;
-    var team1 = req.body.team2;
+    var team1 = req.body.team1;
     var team2 = req.body.team2;
     var date = req.body.date;
     // Set our collection
