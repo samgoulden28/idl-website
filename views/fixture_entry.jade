@@ -1,0 +1,46 @@
+extends ./layout
+
+block header
+  header.w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Enter Fixture Info
+    
+block content
+  // Enter a game
+  .w3-card-4.w3-center.w3-white
+    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addfixture', action='/addfixture', method='post')
+      input(name='season', type='hidden' value="#{season}") 
+      h2.w3-center Enter a Fixture
+      .w3-row.w3-section
+        | Season #{season}
+      .w3-row.w3-section
+          | Best of:   
+          select.w3-select.w3-border(name='best_of', style='width:10%')
+            option(value='1') 1
+            option(value='3', selected='') 3
+            option(value='5') 5
+      .w3-row.w3-section
+        .w3-col(style='width:50px')
+          | Date: 
+        .w3-rest
+          input.w3-input.w3-border(name='date', type='date', placeholder='Date Played')
+      .w3-row.w3-section
+        select.w3-select.w3-border.w3-half(name='team1')
+          option(value='', disabled='', selected='') Team 1
+            each team in teams
+              option(value=team.team_name)= team.team_name
+        select.w3-select.w3-border.w3-half(name='team2')
+          option(value='', disabled='', selected='') Team 2
+            each team in teams
+              option(value=team.team_name)= team.team_name
+      
+      .w3-row.w3-section
+          p
+          p
+      .w3-row.w3-section
+        .w3-col(style='width:50px')
+          i.w3-xxlarge.fa.fa-user
+        .w3-rest
+          input.w3-input.w3-border(name='password', type='password', placeholder='Password')
+      button.w3-btn-block.w3-section.w3-blue.w3-ripple.w3-padding Send

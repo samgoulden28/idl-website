@@ -1,0 +1,24 @@
+extends ./layout
+
+block header
+  header.w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Upcoming Fixtures
+    
+block content
+  // Enter a game
+  .w3-card-4.w3-center.w3-white
+    - var cols = 3;
+    - var rows = 5;
+    - var i = 0;
+    - var j = 0;
+    - var count = 0;
+    - for (i = 0; i < rows && count < fixtures.length; i++)
+      .w3-row
+        - for (j = 0; j < cols && count < fixtures.length; j++)
+          .w3-col.l4.w3-padding-8
+            a.w3-card-4.w3-button(href="/")
+              h4 #{prettyDate(fixtures[count].date)}
+              p #{fixtures[count].team1} vs #{fixtures[count].team2}
+          - count++;

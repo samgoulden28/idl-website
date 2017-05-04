@@ -28,7 +28,7 @@ html
             | GAMES
             i.fa.fa-caret-down
           .w3-dropdown-content.w3-white.w3-card-4
-            a(href='/game_entry') Add a game
+            a(href='/game_entry_fixture_select') Add a game
             a(href='/game_delete') Delete a game
             a(href='/game_edit') Edit a game
         .w3-hide-small.w3-dropdown-hover
@@ -38,6 +38,13 @@ html
           .w3-dropdown-content.w3-white.w3-card-4
             a(href='/teams') View teams
             a(href='/team_entry') Add a team
+        .w3-hide-small.w3-dropdown-hover
+          a.w3-padding-large.w3-button(href='javascript:void(0)', title='FIXTURES')
+            | FIXTURES 
+            i.fa.fa-caret-down
+          .w3-dropdown-content.w3-white.w3-card-4
+            a(href='/fixtures') View fixtures
+            a(href='/fixture_entry_season_select') Add a fixture
         a.w3-padding-large.w3-hover-red.w3-hide-small.w3-right(href='javascript:void(0)')
           i.fa.fa-search
     //

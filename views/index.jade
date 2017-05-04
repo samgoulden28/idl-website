@@ -40,22 +40,25 @@ block content
   .w3-row
     // Recent Games!
     .w3-col.l8.s12.w3-center
-      h2 RECENT GAMES
+      h2 RECENT MATCHES
     #blog-entries.w3-col.l8.s12
       - var count = 0;
-      - for game in games 
+      - for fixture in fixtures 
         .w3-card-4.w3-margin.w3-white
           .w3-container
-            p Game #{game.game_no} of #{game.game_total}
-          .w3-container
-            h3
-              b
-                a(href="/view_game?id=#{game.matchID}") #{game.team1} vs #{game.team2}
-            h5
-              p Played #{prettyDate(game.played)}
-          .w3-container
-            p Winner: #{game.winner}
-            p Match ID: #{game.matchID}
+            h3 #{fixture.team1} vs #{fixture.team2}
+            p Fixture date: #{prettyDate(fixture.date)}
+          - var gcount = 0;
+          - for game in fixture.games
+            - gcount++;
+            .w3-container
+              h3 
+                a(href="/view_game?id=#{game.matchID}") Game #{gcount}
+              b Match ID: #{game.matchID}
+              h5
+                p Played #{prettyDate(game.played)}
+            .w3-container
+              p Winner: #{game.winner}
         - count++;
         - if(count >= 5) 
           button.w3-btn-block.w3-section.w3-blue.w3-ripple.w3-padding See All Games

@@ -52,11 +52,22 @@ function get_season(callback) {
   });
 }
 
-//teams = [ "Team A", "Team B", "Team C", "Team D" ];
 
 function passwordCorrect(given_password) {
   return given_password === config.access.password;
 }
+
+app.get('/fixture_entry_season_select', function (req, res) {
+  res.render('fixture_entry_season_select', { season: config.season });
+})
+
+
+app.get('/fixture_entry', function (req, res) {
+  get_teams(function(err, teams) {
+    season = (req.query.season == null) ? config.season : req.query.season;
+    res.render('fixture_entry', { teams: teams, season: season});
+  });
+})
 
 app.get('/view_game', function (req, res) {
   console.log(req.query.id);
@@ -76,12 +87,28 @@ app.get('/view_game', function (req, res) {
   });
 })
 
+app.get('/game_entry_fixture_select', function (req, res) {
+  //Get the list of games
+  var db = req.db;
+  var fixtures_collection = db.get('fixtures');
+  //Sort on match ID (they are in chronological order)
+  fixtures_collection.find({"season" : config.season}, {"sort": { "date": -1 } }, function(e,docs) {
+    res.render('game_entry_fixture_select', { fixtures: docs, season: config.season });
+  })
+})
+
 app.get('/game_entry', function (req, res) {
-  get_season(function(err, season) {
-    get_teams(function(err, teams) {
-      res.render('game_entry', { teams: teams, season: season });
-    });
-  });
+    fixture_id = req.query.fixture;
+    if(fixture_id == null) {
+      res.redirect('/error');
+    } else {
+      var db = req.db;
+      var fixtures_collection = db.get('fixtures');
+      //Sort on match ID (they are in chronological order)
+      fixtures_collection.findOne({"_id" : ObjectId(fixture_id)}, function(e,doc) {
+        res.render('game_entry', { fixture: doc });
+      })
+    }
 })
 
 app.get('/team_entry', function (req, res) {
@@ -260,6 +287,51 @@ app.post('/deletegame', function (req, res) {
 })
 
 /* POST to Add User Service */
+app.post('/addfixture', function(req, res) {
+  // Set our internal DB variable
+  var db = req.db;
+
+  //Check the user has provided the correct password
+  var password = req.body.password;
+
+  if (!passwordCorrect(password)) {
+    res.send("Incorrect password supplied.");
+  } else {
+
+    // Get our form values. These rely on the "name" attributes
+    var season = req.body.season;
+    var best_of = req.body.best_of;
+    var team1 = req.body.team2;
+    var team2 = req.body.team2;
+    var date = req.body.date;
+    // Set our collection
+    var collection = db.get('fixtures');
+
+    var msec = Date.parse(date);
+    var d = new Date(msec);
+    // Submit to the DB
+    collection.insert({ "date" : d,
+                        "best_of" : best_of,
+                        "team1" : team1,
+                        "team2" : team2,
+                        "winner": "",
+                        "played" : false,
+                        "season" : season,
+                        "games" : []}
+                      , function (err, doc) {
+        if (err) {
+            // If it failed, return error
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            // And forward to success page
+            res.redirect("/");
+        }
+    });
+  }
+});
+
+/* POST to Add User Service */
 app.post('/addgame', function(req, res) {
   // Set our internal DB variable
   var db = req.db;
@@ -272,32 +344,26 @@ app.post('/addgame', function(req, res) {
   } else {
 
     // Get our form values. These rely on the "name" attributes
+    var fixture = JSON.parse(req.body.fixture.replace(/&quot;/g, '\\"'));
     var matchID = req.body.matchID;
     var played = req.body.played;
-    var team1 = req.body.team1;
-    var team2 = req.body.team2;
     var winner = req.body.winner;
     var game_no = req.body.game_no;
-    var game_total = req.body.game_total;
-    var season = req.body.season;
-
-
     // Set our collection
-    var collection = db.get('games');
+    var collection = db.get('fixtures');
 
     var msec = Date.parse(played);
     var d = new Date(msec);
     // Submit to the DB
-    collection.insert({
+    collection.update({
+        "_id": fixture._id,
+      },
+      { $push: {"games": {
         "game_no": game_no,
-        "game_total": game_total,
         "matchID": matchID,
-        "team1" : team1,
-        "team2" : team2,
         "winner": winner,
-        "played": new Date(d),
-        "season": season
-    }, function (err, doc) {
+        "played": new Date(d)
+      }}}, function (err, doc) {
         if (err) {
             // If it failed, return error
             res.send("There was a problem adding the information to the database.");
@@ -323,12 +389,22 @@ app.get('/error', function (req, res) {
   res.send("Something went wrong. Go back to the home page here: <a href=\"/\"> Go home </a>");
 })
 
+app.get('/fixtures', function (req, res) {
+  var db = req.db;
+  var collection = db.get('fixtures');
+  collection.find({"date" : { $gte : new Date()}},function(e,docs) {
+    console.log("Found fixtures: " + docs + " after date: " + new Date())
+    res.render('fixtures', { fixtures: docs } );
+  });
+})
+
 app.get('/', function (req, res) {
   //Get the list of games
   var db = req.db;
-  var collection = db.get('games');
+  var fixtures_collection = db.get('fixtures');
   //Sort on match ID (they are in chronological order)
-  collection.find({"season" : config.season}, {"sort": { "matchID": -1 } }, function(e,docs) {
+  fixtures_collection.find({"season" : config.season}, {"sort": { "date": -1 } }, function(e,docs) {
+    var fixtures = docs;
     get_season(function(err, season) {
       if(!season) {
         console.log("Found no season info for season " + config.season)
@@ -348,10 +424,12 @@ app.get('/', function (req, res) {
           teamPositions.push(teams[team].team_name);
         }
         //Add scores to teams depending on database of games.
-        for (var game in docs) {
-          teamStats['played'][docs[game].team1] += 1;
-          teamStats['played'][docs[game].team2] += 1;
-          teamStats['won'][docs[game].winner] += 1;
+        for (var fixture in fixtures) {
+          for (var game in fixtures[fixture]) {
+            teamStats['played'][fixtures[fixture][game].team1] += 1;
+            teamStats['played'][fixtures[fixture][game].team2] += 1;
+            teamStats['won'][fixtures[fixture][game].winner] += 1;
+          }
         }
         //Sort teams based on points won.
         do {
@@ -365,7 +443,7 @@ app.get('/', function (req, res) {
                 }
             }
         } while (swapped);
-        res.render('index', { games : docs, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams } );
+        res.render('index', { fixtures: fixtures, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams } );
       });
     });
   });

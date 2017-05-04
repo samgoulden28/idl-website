@@ -1,0 +1,18 @@
+extends ./layout
+
+block header
+  header.w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Enter Game Info
+    
+block content
+  // Enter a game
+  .w3-card-4.w3-center.w3-white
+    h2.w3-center Select from upcoming fixtures
+    - for fixture in fixtures
+      .w3-container.w3-padding-16
+        a.w3-card-4.w3-button(href='/game_entry?fixture=#{fixture._id}') #{fixture.team1} vs #{fixture.team1} 
+          p Best of #{fixture.best_of} 
+          p #{prettyDate(fixture.date)}
+      
