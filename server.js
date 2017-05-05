@@ -403,7 +403,7 @@ app.get('/', function (req, res) {
   var db = req.db;
   var fixtures_collection = db.get('fixtures');
   //Sort on match ID (they are in chronological order)
-  fixtures_collection.find({"season" : config.season}, {"sort": { "date": -1 } }, function(e,docs) {
+  fixtures_collection.find({"season" : config.season, "played": true }, {"sort": { "date": -1 } }, function(e,docs) {
     var fixtures = docs;
     get_season(function(err, season) {
       if(!season) {
