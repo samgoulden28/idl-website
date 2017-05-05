@@ -99,6 +99,15 @@ app.get('/game_entry_fixture_select', function (req, res) {
   })
 })
 
+app.get('/game_entry_fixture_select_all', function (req, res) {
+  //Get the list of games
+  var db = req.db;
+  var fixtures_collection = db.get('fixtures');
+  fixtures_collection.find({}, {"sort": { "date": 1 } }, function(e,docs) {
+    res.render('game_entry_fixture_select_all', { fixtures: docs, season: config.season });
+  })
+})
+
 app.get('/game_entry', function (req, res) {
     fixture_id = req.query.fixture;
     if(fixture_id == null) {
