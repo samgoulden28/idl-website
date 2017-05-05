@@ -92,7 +92,9 @@ app.get('/game_entry_fixture_select', function (req, res) {
   var db = req.db;
   var fixtures_collection = db.get('fixtures');
   //Sort on match ID (they are in chronological order)
-  fixtures_collection.find({"season" : config.season, "date" : { $gte : new Date()}}, {"sort": { "date": 1 } }, function(e,docs) {
+  var oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  fixtures_collection.find({"season" : config.season, "date" : { $gte : oneWeekAgo}}, {"sort": { "date": 1 } }, function(e,docs) {
     res.render('game_entry_fixture_select', { fixtures: docs, season: config.season });
   })
 })

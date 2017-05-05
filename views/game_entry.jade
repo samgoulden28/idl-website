@@ -26,10 +26,9 @@ block content
         .w3-rest
           input.w3-input.w3-border(name='matchID', type='text', placeholder='Match ID')
       .w3-row.w3-section
-        .w3-col(style='width:50px')
-          i.w3-xxlarge.fa.fa-user
+        | Date played
         .w3-rest
-          input.w3-input.w3-border(name='played', type='date', placeholder='Date Played')
+          input.w3-input.w3-border(name='played', type='date', value='#{dashedDate(fixture.date)}')
       .w3-row.w3-section
         | Winner
         select.w3-select.w3-border(name='winner')

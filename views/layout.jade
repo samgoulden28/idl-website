@@ -1,10 +1,20 @@
 -function prettyDate(dateString){
-    //if it's already a date object and not a string you don't need this line:
     -var date = new Date(dateString);
     -var d = date.getDate();
     -var m = date.getMonth() + 1;
     -var y = date.getFullYear();
+    -if(m < 10) m = "0" + m;
     -return d+'/'+m+'/'+y;
+-}
+
+-function dashedDate(dateString){
+    -var date = new Date(dateString);
+    -var d = date.getDate();
+    -var m = date.getMonth() + 1;
+    -var y = date.getFullYear();
+    -if(m < 10)
+    - m = "0" + m;
+    -return y+'-'+m+'-'+d;
 -}
 
 doctype html
