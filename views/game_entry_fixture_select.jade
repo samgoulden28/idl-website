@@ -12,7 +12,7 @@ block content
     h2.w3-center Select from upcoming fixtures
     - for fixture in fixtures
       .w3-container.w3-padding-16
-        a.w3-card-4.w3-button(href='/game_entry?fixture=#{fixture._id}') #{fixture.team1} vs #{fixture.team1} 
+        a.w3-card-4.w3-button(href='/game_entry?fixture=#{fixture._id}') #{fixture.team1} vs #{fixture.team2} 
           p Best of #{fixture.best_of} 
           p #{prettyDate(fixture.date)}
       

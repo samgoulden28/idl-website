@@ -92,7 +92,7 @@ app.get('/game_entry_fixture_select', function (req, res) {
   var db = req.db;
   var fixtures_collection = db.get('fixtures');
   //Sort on match ID (they are in chronological order)
-  fixtures_collection.find({"season" : config.season}, {"sort": { "date": -1 } }, function(e,docs) {
+  fixtures_collection.find({"season" : config.season, "date" : { $gte : new Date()}}, {"sort": { "date": 1 } }, function(e,docs) {
     res.render('game_entry_fixture_select', { fixtures: docs, season: config.season });
   })
 })
@@ -392,7 +392,7 @@ app.get('/error', function (req, res) {
 app.get('/fixtures', function (req, res) {
   var db = req.db;
   var collection = db.get('fixtures');
-  collection.find({"date" : { $gte : new Date()}},function(e,docs) {
+  collection.find({"date" : { $gte : new Date()}}, {"sort": { "date": 1 }},function(e,docs) {
     console.log("Found fixtures: " + docs + " after date: " + new Date())
     res.render('fixtures', { fixtures: docs } );
   });
