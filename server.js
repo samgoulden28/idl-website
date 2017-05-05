@@ -369,11 +369,12 @@ app.post('/addgame', function(req, res) {
     collection.update({
         "_id": fixture._id,
       },
-      { $push: {"games": {
-        "game_no": game_no,
-        "matchID": matchID,
-        "winner": winner,
-        "played": new Date(d)
+      { $set: {"played": true},
+        $push: {"games": {
+          "game_no": game_no,
+          "matchID": matchID,
+          "winner": winner,
+          "played": new Date(d)
       }}}, function (err, doc) {
         if (err) {
             // If it failed, return error
