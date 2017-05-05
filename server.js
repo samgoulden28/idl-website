@@ -446,10 +446,10 @@ app.get('/', function (req, res) {
         }
         //Add scores to teams depending on database of games.
         for (var fixture in fixtures) {
-          for (var game in fixtures[fixture]) {
-            teamStats['played'][fixtures[fixture][game].team1] += 1;
-            teamStats['played'][fixtures[fixture][game].team2] += 1;
-            teamStats['won'][fixtures[fixture][game].winner] += 1;
+          for (var game in fixtures[fixture].games) {
+            teamStats['played'][fixtures[fixture].team1] += 1;
+            teamStats['played'][fixtures[fixture].team2] += 1;
+            teamStats['won'][fixtures[fixture].games[game].winner] += 1;
           }
         }
         //Sort teams based on points won.
