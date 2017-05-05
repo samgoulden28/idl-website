@@ -400,6 +400,15 @@ app.get('/fixtures', function (req, res) {
   });
 })
 
+app.get('/fixture', function (req, res) {
+  var db = req.db;
+  var collection = db.get('fixtures');
+  collection.find({"date" : { $gte : new Date()}}, {"sort": { "date": 1 }},function(e,docs) {
+    console.log("Found fixtures: " + docs + " after date: " + new Date())
+    res.render('fixtures', { fixtures: docs } );
+  });
+})
+
 app.get('/', function (req, res) {
   //Get the list of games
   var db = req.db;
