@@ -82,7 +82,7 @@ app.get('/view_game', function (req, res) {
       else {
           console.log("Found match: " + id);
           // Render the edit page
-          console.log(doc) 
+          console.log(doc)
           res.render('view_game', { game: doc });
       }
   });
@@ -427,7 +427,9 @@ app.get('/error', function (req, res) {
 app.get('/fixtures', function (req, res) {
   var db = req.db;
   var collection = db.get('fixtures');
-  collection.find({"date" : { $gte : new Date()}}, {"sort": { "date": 1 }},function(e,docs) {
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  collection.find({"date" : { $gte : yesterday}}, {"sort": { "date": 1 }},function(e,docs) {
     console.log("Found fixtures: " + docs + " after date: " + new Date())
     res.render('fixtures', { fixtures: docs } );
   });
