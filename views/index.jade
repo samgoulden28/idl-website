@@ -47,7 +47,10 @@ block content
         .w3-card-4.w3-margin.w3-white
           .w3-container
             h3 #{fixture.team1} vs #{fixture.team2}
-            p Fixture date: #{prettyDate(fixture.date)}
+            h4 Winner:
+              b     #{fixture.winner}!
+            h5 Fixture date: #{prettyDate(fixture.date)}
+            
           - var gcount = 0;
           - for game in fixture.games
             - gcount++;

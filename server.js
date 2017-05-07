@@ -72,9 +72,9 @@ app.get('/fixture_entry', function (req, res) {
 app.get('/view_game', function (req, res) {
   console.log(req.query.id);
   var id = req.query.id;
-  var collection = db.get('games');
+  var collection = db.get('fixtures');
   // Submit to the DB
-  collection.findOne({"matchID": id}, {},  function (err, doc) {
+  collection.findOne({"games.matchID": id}, function (err, doc) {
       if (err) {
           // If it failed, return error
           res.send("There was a problem getting the game from the database.");
@@ -82,6 +82,7 @@ app.get('/view_game', function (req, res) {
       else {
           console.log("Found match: " + id);
           // Render the edit page
+          console.log(doc) 
           res.render('view_game', { game: doc });
       }
   });
@@ -369,8 +370,7 @@ app.post('/addgame', function(req, res) {
     collection.update({
         "_id": fixture._id,
       },
-      { $set: {"played": true},
-        $push: {"games": {
+      { $push: {"games": {
           "game_no": game_no,
           "matchID": matchID,
           "winner": winner,
@@ -381,8 +381,31 @@ app.post('/addgame', function(req, res) {
             res.send("There was a problem adding the information to the database.");
         }
         else {
-            // And forward to success page
-            res.redirect("/");
+          collection.findOne({"_id": fixture._id}, function (fixture_err, fixture_doc) {
+            if (fixture_err) {
+                // If it failed, return error
+                res.send("There was a problem adding the information to the database.");
+            } else {
+              var thisTeamHasWon = 1;
+              console.log(fixture_doc)
+              for (game in fixture_doc.games) {
+                if(fixture_doc.games[game].winner == winner && fixture_doc.games[game].matchID != matchID) {
+                  thisTeamHasWon++;
+                  if(thisTeamHasWon > fixture_doc.best_of / 2) {
+                      console.log("Team: " + winner + " has won " + thisTeamHasWon + " out of " + fixture_doc.best_of + " games and takes the series!");
+                      collection.update({"_id": fixture_doc._id}, {$set: { "played": true, "winner": winner } }, function (err2, doc2) {
+                        if (err2) {
+                            // If it failed, return error
+                            res.send("There was a problem adding the information to the database.");
+                        }
+                      });
+                  }
+                }
+              }
+            }
+          });
+          // And forward to success page
+          res.redirect("/");
         }
     });
   }
