@@ -386,10 +386,9 @@ app.post('/addgame', function(req, res) {
                 // If it failed, return error
                 res.send("There was a problem adding the information to the database.");
             } else {
-              var thisTeamHasWon = 1;
-              console.log(fixture_doc)
+              var thisTeamHasWon = 0;
               for (game in fixture_doc.games) {
-                if(fixture_doc.games[game].winner == winner && fixture_doc.games[game].matchID != matchID) {
+                if(fixture_doc.games[game].winner == winner) {
                   thisTeamHasWon++;
                   if(thisTeamHasWon > fixture_doc.best_of / 2) {
                       console.log("Team: " + winner + " has won " + thisTeamHasWon + " out of " + fixture_doc.best_of + " games and takes the series!");
