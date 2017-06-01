@@ -1,4 +1,5 @@
 var config = require('./config');
+var heroes = require('./heroes');
 var express = require('express');
 var app = express();
 
@@ -61,6 +62,10 @@ app.get('/fixture_entry_season_select', function (req, res) {
   res.render('fixture_entry_season_select', { season: config.season });
 })
 
+app.get('/heroes/:hero', function (req, res) {
+  console.log(req.params.hero);
+  res.send('<img src="/heroes/' + heroes[req.params.hero].image + '"/>');
+})
 
 app.get('/fixture_entry', function (req, res) {
   get_teams(function(err, teams) {

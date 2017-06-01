@@ -60,6 +60,11 @@ block content
               b Match ID: #{game.matchID}
               h5
                 p Played #{prettyDate(game.played)}
+              | Radiant: #{game.info.radiant.team}
+              - for hero in game.info.radiant.heroes
+                h3 #{hero.player}
+                  img#imgmayt(src='/heroes/98.png', alt='Image', style='width:50px')
+              | Dire: #{game.info.dire.team}
             .w3-container
               p Winner: #{game.winner}
         - count++;
