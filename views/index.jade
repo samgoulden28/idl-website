@@ -54,10 +54,9 @@ block content
           - var gcount = 0;
           - var hcount = 0;
           - for game in fixture.games
-            
             .w3-container
               h3 
-                a(href="/view_game?id=#{game.matchID}") Game #{gcount}
+                a(href="/view_game?id=#{game.matchID}") Game #{gcount+1}
               b Match ID: #{game.matchID}
               h5
                 p Played #{prettyDate(game.played)}
