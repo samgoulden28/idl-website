@@ -28,7 +28,7 @@ func main() {
     log.Fatalf("unable to create parser: %s", err)
   }
 
-  session, err := mgo.Dial("localhost:27017")
+  session, err := mgo.Dial("ec2-54-200-75-62.us-west-2.compute.amazonaws.com:27017")
   if err != nil {
           panic(err)
   }
