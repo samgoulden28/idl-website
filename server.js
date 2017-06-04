@@ -1,6 +1,10 @@
 var config = require('./config');
+var heroes = require('./heroes');
 var express = require('express');
 var app = express();
+
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -61,6 +65,9 @@ app.get('/fixture_entry_season_select', function (req, res) {
   res.render('fixture_entry_season_select', { season: config.season });
 })
 
+app.get('/heroes', function (req, res) {
+  res.json(heroes);
+})
 
 app.get('/fixture_entry', function (req, res) {
   get_teams(function(err, teams) {
@@ -343,9 +350,12 @@ app.post('/addfixture', function(req, res) {
   }
 });
 
+const exec = require('child_process').exec;
+
 /* POST to Add User Service */
-app.post('/addgame', function(req, res) {
-  // Set our internal DB variable
+app.post('/addgame', upload.single('replay'), function(req, res, next) {
+  if(req.file)  console.log("replay file: " + req.file.path)
+
   var db = req.db;
 
   //Check the user has provided the correct password
@@ -386,19 +396,29 @@ app.post('/addgame', function(req, res) {
                 // If it failed, return error
                 res.send("There was a problem adding the information to the database.");
             } else {
-              var thisTeamHasWon = 0;
-              for (game in fixture_doc.games) {
-                if(fixture_doc.games[game].winner == winner) {
-                  thisTeamHasWon++;
-                  if(thisTeamHasWon > fixture_doc.best_of / 2) {
-                      console.log("Team: " + winner + " has won " + thisTeamHasWon + " out of " + fixture_doc.best_of + " games and takes the series!");
-                      collection.update({"_id": fixture_doc._id}, {$set: { "played": true, "winner": winner } }, function (err2, doc2) {
-                        if (err2) {
-                            // If it failed, return error
-                            res.send("There was a problem adding the information to the database.");
-                        }
-                      });
+              if(req.file.path) {
+                exec('replay_parser\\go\\src\\parser\\parser ' + req.file.path + ' ' + fixture._id + ' ' + matchID, (error, stdout, stderr) => {
+                  if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
                   }
+                  console.log(`stdout: ${stdout}`);
+                  console.log(`stderr: ${stderr}`);
+                });
+              }
+            }
+            var thisTeamHasWon = 0;
+            for (game in fixture_doc.games) {
+              if(fixture_doc.games[game].winner == winner) {
+                thisTeamHasWon++;
+                if(thisTeamHasWon > fixture_doc.best_of / 2) {
+                  console.log("Team: " + winner + " has won " + thisTeamHasWon + " out of " + fixture_doc.best_of + " games and takes the series!");
+                  collection.update({"_id": fixture_doc._id}, {$set: { "played": true, "winner": winner } }, function (err2, doc2) {
+                    if (err2) {
+                        // If it failed, return error
+                        res.send("There was a problem adding the information to the database.");
+                    }
+                  });
                 }
               }
             }
@@ -488,7 +508,7 @@ app.get('/', function (req, res) {
                 }
             }
         } while (swapped);
-        res.render('index', { fixtures: fixtures, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams } );
+        res.render('index', { fixtures: fixtures, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams, heroList: heroes } );
       });
     });
   });

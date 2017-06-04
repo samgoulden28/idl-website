@@ -9,7 +9,7 @@ block header
 block content
   // Enter a game
   .w3-card-4.w3-center.w3-white
-    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addgame', action='/addgame', method='post')
+    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addgame', action='/addgame', method='post', enctype='multipart/form-data')
       input.w3-input.w3-border(name='fixture', type='hidden', value='#{JSON.stringify(fixture)}')
       h2.w3-center Enter a Game For Fixture:
       h3.w3-center #{fixture.team1} vs #{fixture.team2} on #{prettyDate(fixture.date)}
@@ -41,7 +41,7 @@ block content
           p
             label.w3-label
               b Upload Replay File
-            input(type='file', name='replay')
+            input(type='file', id='replay' name='replay')
           p
       .w3-row.w3-section
         .w3-col(style='width:50px')

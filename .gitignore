@@ -2,3 +2,7 @@ node_modules
 npm-debug.log*
 config.js
 data/
+replay_parser/go/src/github.com/
+replay_parser/go/src/parser/*.dem
+replay_parser/go/src/parser/*.exe
+replay_parser/go/src/mgo_test/
