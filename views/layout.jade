@@ -20,17 +20,15 @@
 -}
 
 doctype html
-html(ng-app="demo")
+html
   title IDL - IBM Dota League
   meta(charset='UTF-8')
   meta(name='viewport', content='width=device-width, initial-scale=1')
   link(rel='stylesheet', href='w3.css')
   link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
-  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js")
-  script(src="my_angular.js")
   style.
     body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-  body.w3-light-grey(onload='#{onloadfunction}' ng-controller='Hello')
+  body.w3-light-grey(onload='#{onloadfunction}')
     // Navbar
     .w3-top
       .w3-bar.w3-grey.w3-card-2
