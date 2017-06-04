@@ -52,19 +52,36 @@ block content
             h5 Fixture date: #{prettyDate(fixture.date)}
             
           - var gcount = 0;
+          - var hcount = 0;
           - for game in fixture.games
-            - gcount++;
+            
             .w3-container
               h3 
                 a(href="/view_game?id=#{game.matchID}") Game #{gcount}
               b Match ID: #{game.matchID}
               h5
                 p Played #{prettyDate(game.played)}
-              | Radiant: #{game.info.radiant.team}
-              - for hero in game.info.radiant.heroes
-                h3 #{hero.player}
-                  img#imgmayt(src='/heroes/98.png', alt='Image', style='width:50px')
-              | Dire: #{game.info.dire.team}
+              div(id="gameInfo#{count}-#{gcount}")
+                - if(typeof(game.radiant) !== 'undefined')
+                  .w3-row
+                    .w3-center Radiant:
+                    - for hero in game.radiant.heroes
+                      - hcount++;
+                      .w3-col.m2
+                        h5 #{hero.player}
+                          | <br />
+                          img#img(src="/heroes/#{heroList[hero.hero].image}", alt='Image2', style='width:50px')
+                h2.w3-center VS
+                - if(typeof(game.dire) !== 'undefined')
+                  .w3-row
+                    .w3-center Dire: 
+                    - for hero in game.dire.heroes
+                      - hcount++;
+                      .w3-col.m2
+                        h5 #{hero.player}
+                          | <br />
+                          img#img(src="/heroes/#{heroList[hero.hero].image}", alt='Image2', style='width:50px')
+              -gcount++
             .w3-container
               p Winner: #{game.winner}
         - count++;

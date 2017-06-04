@@ -62,9 +62,8 @@ app.get('/fixture_entry_season_select', function (req, res) {
   res.render('fixture_entry_season_select', { season: config.season });
 })
 
-app.get('/heroes/:hero', function (req, res) {
-  console.log(req.params.hero);
-  res.send('<img src="/heroes/' + heroes[req.params.hero].image + '"/>');
+app.get('/heroes', function (req, res) {
+  res.json(heroes);
 })
 
 app.get('/fixture_entry', function (req, res) {
@@ -348,6 +347,8 @@ app.post('/addfixture', function(req, res) {
   }
 });
 
+const exec = require('child_process').exec;
+
 /* POST to Add User Service */
 app.post('/addgame', function(req, res) {
   // Set our internal DB variable
@@ -391,6 +392,14 @@ app.post('/addgame', function(req, res) {
                 // If it failed, return error
                 res.send("There was a problem adding the information to the database.");
             } else {
+              exec('replay_parser\\go\\src\\parser\\parser replay_parser\\go\\src\\parser\\3218728471.dem ' + fixture._id + ' ' + matchID, (error, stdout, stderr) => {
+              if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+              }
+              console.log(`stdout: ${stdout}`);
+              console.log(`stderr: ${stderr}`);
+            });
               var thisTeamHasWon = 0;
               for (game in fixture_doc.games) {
                 if(fixture_doc.games[game].winner == winner) {
@@ -493,7 +502,7 @@ app.get('/', function (req, res) {
                 }
             }
         } while (swapped);
-        res.render('index', { fixtures: fixtures, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams } );
+        res.render('index', { fixtures: fixtures, teamStats: teamStats, teamPositions: teamPositions, season: season, teams: teams, heroList: heroes } );
       });
     });
   });
