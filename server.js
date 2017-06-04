@@ -397,7 +397,7 @@ app.post('/addgame', upload.single('replay'), function(req, res, next) {
                 res.send("There was a problem adding the information to the database.");
             } else {
               if(req.file.path) {
-                exec('replay_parser\\go\\src\\parser\\parser ' + req.file.path + ' ' + fixture._id + ' ' + matchID, function (error, stdout, stderr) {
+                exec('replay_parser/go/src/parser/parser ' + req.file.path + ' ' + fixture._id + ' ' + matchID, function (error, stdout, stderr) {
                   if (error) {
                     console.error('exec error: ' + error);
                     return;
