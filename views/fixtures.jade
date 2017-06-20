@@ -18,7 +18,7 @@ block content
       .w3-row
         - for (j = 0; j < cols && count < fixtures.length; j++)
           .w3-col.l4.w3-padding-8
-            a.w3-card-4.w3-button(href="/")
+            a.w3-card-4.w3-button(href="/fixture?id=#{fixtures[count]._id}")
               h4 #{prettyDate(fixtures[count].date)}
               p #{fixtures[count].team1} vs #{fixtures[count].team2}
           - count++;

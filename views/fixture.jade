@@ -9,7 +9,8 @@ block header
 block content
   // Enter a game
   .w3-card-4.w3-center.w3-white
-    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name= 'addfixture', action='/addfixture', method='post')
+    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name='editfixture', action='/editfixture', method='post')
+      input(name='id', type='hidden' value="#{fixture._id}") 
       input(name='season', type='hidden' value="#{season}") 
       h2(ng-if="edit").w3-center.animate-if Edit Fixture
       h2(ng-if="!edit").w3-center.animate-if Fixture Info
@@ -20,12 +21,12 @@ block content
             each team in teams
               - console.log(team.team_name + ", " + fixture.team1)
               - var select=null; if (team.team_name == fixture.team1) select='selected';
-                option(value='', selected=select) #{team.team_name}
+                option(value='#{team.team_name}', selected=select) #{team.team_name}
           select.w3-select.w3-border.w3-half(name='team2')
             each team in teams
               - console.log(team.team_name + ", " + fixture.team2)
               - var select=null; if (team.team_name == fixture.team2) select='selected';
-                option(value='', selected=select) #{team.team_name}
+                option(value='#{team.team_name}', selected=select) #{team.team_name}
         h4(ng-if="!edit") Bo#{fixture.best_of}
         div(ng-if="edit").w3-row.w3-section
             | Best of:   
@@ -58,6 +59,8 @@ block content
                 each player in team.players
                   h5 
                     a(href="#{player.steam_profile}") #{player.name}
+      .w3-row.w3-section
+        input.w3-input.w3-border(ng-if="edit" name='password', type='password', placeholder='Password')
       .w3-row.w3-section
           p
           p

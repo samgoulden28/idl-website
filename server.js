@@ -455,12 +455,56 @@ app.get('/fixtures', function (req, res) {
 })
 
 app.get('/fixture', function (req, res) {
+  var fixture_id = req.query.id;
   var db = req.db;
-  var collection = db.get('fixtures');
-  collection.find({"date" : { $gte : new Date()}}, {"sort": { "date": 1 }},function(e,docs) {
-    console.log("Found fixtures: " + docs + " after date: " + new Date())
-    res.render('fixtures', { fixtures: docs } );
+  var fixtures_collection = db.get('fixtures');
+  var teams_collection = db.get('teams');
+  fixtures_collection.findOne({"_id" : ObjectId(fixture_id)},function(e,fixture) {
+    console.log("Found fixture: " + fixture)
+    teams_collection.find({"season" : fixture.season}, function(e2, teams) {
+      console.log("Found teams: " + teams)
+      res.render('fixture', { fixture: fixture, teams: teams } );
+    })
   });
+})
+
+app.post('/editfixture', function (req, res) {
+  var db = req.db;
+
+  //Check the user has provided the correct password
+  var password = req.body.password;
+
+  if (!passwordCorrect(password)) {
+    res.send("Incorrect password supplied.");
+  } else {
+    // Get our form values. These rely on the "name" attributes
+    var id = req.body.id
+    var team1 = req.body.team1;
+    var team2 = req.body.team2;
+    var best_of = req.body.best_of;
+    var played = req.body.played;
+
+    var msec = Date.parse(played);
+    var d = new Date(msec);
+
+    // Set our collection
+    var collection = db.get('fixtures');
+
+    // Submit to the DB
+    collection.update({
+        "_id": id,
+      },
+      { $set: {
+          "team1": team1,
+          "team2": team2,
+          "best_of": best_of,
+          "date": new Date(d)
+      }}, function (err, doc) {
+        if(!err) {
+          res.redirect("/");
+        }
+      })
+    }
 })
 
 app.get('/', function (req, res) {
