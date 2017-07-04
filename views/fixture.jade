@@ -1,0 +1,71 @@
+extends ./layout
+
+block header
+  header.w3-container.w3-center.w3-padding-64
+    h1
+      b IBM DOTA LEAGUE
+    p Fixture Info
+    
+block content
+  // Enter a game
+  .w3-card-4.w3-center.w3-white
+    form.w3-container.w3-card-4.w3-light-grey.w3-text-blue.w3-margin(name='editfixture', action='/editfixture', method='post')
+      input(name='id', type='hidden' value="#{fixture._id}") 
+      input(name='season', type='hidden' value="#{season}") 
+      h2(ng-if="edit").w3-center.animate-if Edit Fixture
+      h2(ng-if="!edit").w3-center.animate-if Fixture Info
+      .w3-row.w3-section
+        h3(ng-if="!edit") #{fixture.team1} vs #{fixture.team2}
+        div(ng-if="edit").w3-row.w3-section
+          select.w3-select.w3-border.w3-half(name='team1')
+            each team in teams
+              - console.log(team.team_name + ", " + fixture.team1)
+              - var select=null; if (team.team_name == fixture.team1) select='selected';
+                option(value='#{team.team_name}', selected=select) #{team.team_name}
+          select.w3-select.w3-border.w3-half(name='team2')
+            each team in teams
+              - console.log(team.team_name + ", " + fixture.team2)
+              - var select=null; if (team.team_name == fixture.team2) select='selected';
+                option(value='#{team.team_name}', selected=select) #{team.team_name}
+        h4(ng-if="!edit") Bo#{fixture.best_of}
+        div(ng-if="edit").w3-row.w3-section
+            | Best of:   
+            select.w3-select.w3-border(name='best_of', style='width:10%')
+              option(value='1') 1
+              option(value='3', selected='') 3
+              option(value='5') 5
+      h4(ng-if="!edit") #{prettyDate(fixture.date)}
+      h4(ng-if="edit") Date
+        input.w3-input.w3-border(name='played', type='date', value='#{dashedDate(fixture.date)}')
+      .w3-row.w3-section(ng-if="!edit")
+        .w3-card-4.w3-white.w3-border.w3-third(name='team1')
+          header.w3-container.w3-light-grey
+            h3 #{fixture.team1}
+          .w3-container
+            each team in teams
+              - if(team.team_name == fixture.team1)
+                each player in team.players
+                  h5 
+                    a(href="#{player.steam_profile}") #{player.name}
+        .w3-third
+          .w3-center 
+            h1 VS
+        .w3-card-4.w3-white.w3-border.w3-third(name='team2')
+          header.w3-container.w3-light-grey
+            h3 #{fixture.team2}
+          .w3-container
+            each team in teams
+              - if(team.team_name == fixture.team2)
+                each player in team.players
+                  h5 
+                    a(href="#{player.steam_profile}") #{player.name}
+      .w3-row.w3-section
+        input.w3-input.w3-border(ng-if="edit" name='password', type='password', placeholder='Password')
+      .w3-row.w3-section
+          p
+          p
+      button(ng-if="edit").w3-button.w3-blue.w3-center.w3-padding-8 Submit!
+      p
+    footer.w3-padding-8
+      button.w3-button.w3-blue.w3-center(ng-click="toggleEdit()") Click to toggle edit!
+      
