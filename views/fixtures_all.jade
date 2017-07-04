@@ -4,7 +4,7 @@ block header
   header.w3-container.w3-center.w3-padding-64
     h1
       b IBM DOTA LEAGUE
-    p All Fixtures!
+    p Upcoming Fixtures
     
 block content
   // Enter a game
@@ -28,5 +28,5 @@ block content
               p Played: #{fixtures[count].played ? "Yes" : "No"}
           - count++;
     .w3-container.w3-padding-8
-      a.w3-button.w3-teal.w3-center(href="/fixtures_all")
-        h4 Click here to view all fixtures
+      a.w3-button.w3-teal.w3-center(href="/fixtures")
+        h4 Click here to view only upcoming fixtures!

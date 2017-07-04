@@ -446,12 +446,21 @@ app.get('/error', function (req, res) {
 app.get('/fixtures', function (req, res) {
   var db = req.db;
   var collection = db.get('fixtures');
-  var yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  collection.find({"date" : { $gte : yesterday}}, {"sort": { "date": 1 }},function(e,docs) {
-    console.log("Found fixtures: " + docs + " after date: " + new Date())
+  var oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  collection.find({"date" : { $gte : oneWeekAgo}}, {"sort": { "date": 1 }},function(e,docs) {
+    console.log("Found fixtures: " + docs + " after date: " + oneWeekAgo)
     res.render('fixtures', { fixtures: docs } );
   });
+})
+
+app.get('/fixtures_all', function (req, res) {
+  //Get the list of games
+  var db = req.db;
+  var fixtures_collection = db.get('fixtures');
+  fixtures_collection.find({}, {"sort": { "date": 1 } }, function(e,docs) {
+    res.render('fixtures_all', { fixtures: docs, season: config.season });
+  })
 })
 
 app.get('/fixture', function (req, res) {
